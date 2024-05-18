@@ -1,0 +1,20 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/*.xml
+/*.iml
+../*.iml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+
+# Mac OSX files
+../src/.DS_Store
+../src/main/.DS_Store
+# Maven distribution directory
+../bindist/
+# Maven build directory
+../target/
