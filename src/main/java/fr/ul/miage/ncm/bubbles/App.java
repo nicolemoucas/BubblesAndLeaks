@@ -8,8 +8,13 @@ import javafx.stage.Stage;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,29 +31,14 @@ public class App extends Application {
     /**
      * Injection de la classe Baignoire.
      */
-    private static final Baignoire baignoire = null;
+    private static Baignoire baignoire = null;
     private static final String fxmlPath = "/baignoire.fxml";
-
-    /**
-     * Méthode qui lance l'application.
-     * La méthode charge le fichier FXML de la baignoire puis charge la scène principale.
-     * @param primaryStage Scène principale de l'application
-     * @throws Exception Erreur lors du chargement du fichier FXML
-     */
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Bubbles & Leaks");
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            loader.setControllerFactory(c->{return new BaignoireController();});
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static int capaciteMaxBaignoire;
+    private static int nbRobinets;
+    private static int nbFuites;
+    private static List<Robinet> robinets = new ArrayList<Robinet>();
+    private static List<Fuite> fuites = new ArrayList<Fuite>();
+    private static ExecutorService threadPool;
 
     /**
      * Classe principale qui permet de lancer le programme et d'intéragir avec celui-ci
@@ -57,11 +47,8 @@ public class App extends Application {
      */
     public static void main(String[] args) {
         // Arguments
-        int capacite;
-        int nbRobinets;
-        ArrayList<Integer> debitRobinets = new ArrayList<Integer>();
-        int nbFuites;
-        ArrayList<Integer> debitFuites = new ArrayList<Integer>();
+        List<Thread> robinetThreads = new ArrayList<>();
+        List<Thread> fuiteThreads = new ArrayList<>();
 
         // Syntaxe
         Options options = new Options();
@@ -82,13 +69,75 @@ public class App extends Application {
             formatter.printHelp("Hello there", options);
             System.exit(1);
         }
+
         // Process
-        LOG.info("Démarrage de la simulation");
-        capacite = saisirValeur("Entrer la capacité de la baignoire : ");
-        nbRobinets = saisirValeur("Entrer le nombre de robinets : ");
-        nbFuites = saisirValeur("Entrer le nombre de fuites : ");
+        LOG.info("Bubbles & Leaks a démarré");
+        capaciteMaxBaignoire = saisirValeur("Entrer la capacité de la baignoire (litres) : ");
+        baignoire = new Baignoire(capaciteMaxBaignoire);
+        nbRobinets = saisirValeur("Entrer le nombre de robinets (unités) : ");
+        robinets = creerListeRobinets(20);
+        nbFuites = saisirValeur("Entrer le nombre de fuites (unités) : ");
+        fuites = creerListeFuites(10);
+
+        // Création des threads
+        threadPool = Executors.newFixedThreadPool(nbRobinets + nbFuites);
+
+        for (int i = 0; i < nbRobinets; i++) {
+            Robinet robinet = new Robinet(robinets.get(i).getDebit(), baignoire);
+//            threadPool.submit(robinet);
+        }
+
+        for (int i = 0; i < nbFuites; i++) {
+            Fuite fuite = new Fuite(fuites.get(i).getDebit(), baignoire);
+//            threadPool.submit(fuite);
+        }
+
         launch(args);
-        LOG.info("Fin de la simulation");
+        LOG.info("Bubbles & Leaks a fini son exécution");
+    }
+
+    private static List<Fuite> creerListeFuites(int debitDefault) {
+        List<Fuite> fuites = new ArrayList<>();
+        for (int i = 0; i < nbFuites; i++) {
+            Fuite fuite = new Fuite(debitDefault, baignoire);
+            fuites.add(fuite);
+        }
+        return fuites;
+    }
+
+    private static List<Robinet> creerListeRobinets(int debitDefault) {
+        List<Robinet> robinets = new ArrayList<>();
+        for (int i = 0; i < nbRobinets; i++) {
+            Robinet robinet = new Robinet(debitDefault, baignoire);
+            robinets.add(robinet);
+        }
+        return robinets;
+    }
+
+    /**
+     * Méthode qui lance l'application.
+     * La méthode charge le fichier FXML de la baignoire puis charge la scène principale.
+     * @param primaryStage Scène principale de l'application
+     * @throws Exception Erreur lors du chargement du fichier FXML
+     */
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Bubbles & Leaks");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            loader.setControllerFactory(c->{return new BaignoireController(baignoire, robinets, fuites);});
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void stop() throws Exception {
+        threadPool.shutdown();
     }
 
     /**
@@ -101,13 +150,13 @@ public class App extends Application {
     private static int saisirValeur(String message) {
         Scanner scanner = new Scanner(System.in);
         boolean saisieCorrecte = false;
+        int valeur = 0;
         do {
             System.out.print("\n" + message);
             if (scanner.hasNextInt()) {
-                int valeur = scanner.nextInt();
+                valeur = scanner.nextInt();
                 if (valeur >= 0) {
                     saisieCorrecte = true;
-                    return valeur;
                 } else {
                     System.out.println("Erreur : la valeur saisie n'est pas correcte.\n" +
                             "Veuillez réessayer avec un entier >= 0");
@@ -115,10 +164,11 @@ public class App extends Application {
                 }
             } else {
                 System.out.println("Erreur : la valeur saisie n'est pas correcte.\n" +
-                        "Veuillez réessayer avec un entier >= 0");
+                        "Veuillez réessayer avec un entier");
                 scanner.nextLine();
             }
         } while (!saisieCorrecte);
-        return 0;
+//        scanner.close();
+        return valeur;
     }
 }
