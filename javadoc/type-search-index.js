@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"fr.ul.miage.ncm","l":"App"},{"p":"fr.ul.miage.ncm","l":"Baignoire"},{"p":"fr.ul.miage.ncm","l":"BaignoreController"},{"p":"fr.ul.miage.ncm","l":"Launcher"}];updateSearchResults();
