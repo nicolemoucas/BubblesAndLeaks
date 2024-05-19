@@ -1,0 +1,24 @@
+-classpath
+'/Users/nicolecastromoucheron/.m2/repository/commons-cli/commons-cli/1.7.0/commons-cli-1.7.0.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-controls/17.0.10/javafx-controls-17.0.10.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-controls/17.0.10/javafx-controls-17.0.10-mac-aarch64.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-graphics/17.0.10/javafx-graphics-17.0.10.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-graphics/17.0.10/javafx-graphics-17.0.10-mac-aarch64.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-base/17.0.10/javafx-base-17.0.10.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-base/17.0.10/javafx-base-17.0.10-mac-aarch64.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-fxml/17.0.10/javafx-fxml-17.0.10.jar:/Users/nicolecastromoucheron/.m2/repository/org/openjfx/javafx-fxml/17.0.10/javafx-fxml-17.0.10-mac-aarch64.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'17'
+-sourcepath
+'/Users/nicolecastromoucheron/Documents/EDUCATION/UL/S2_2324/POA/Projet/BubblesAndLeaks/src/main/java:/Users/nicolecastromoucheron/Documents/EDUCATION/UL/S2_2324/POA/Projet/BubblesAndLeaks/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2024. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/nicolecastromoucheron/Documents/EDUCATION/UL/S2_2324/POA/Projet/BubblesAndLeaks/javadoc/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'bubbles 1.0-SNAPSHOT API'
+-use
+-version
+-windowtitle
+'bubbles 1.0-SNAPSHOT API'

@@ -18,3 +18,5 @@
 ../bindist/
 # Maven build directory
 ../target/
+# Javadoc
+../javadoc
