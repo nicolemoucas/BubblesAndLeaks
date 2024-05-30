@@ -35,7 +35,6 @@ public class App extends Application {
 //    private static Baignoire baignoire = null;
     private static final String fxmlPath = "/baignoire.fxml";
 
-    private static int capaciteMaxBaignoire;
     private static int nbRobinets;
     private static int nbFuites;
     private static List<Robinet> robinets = new ArrayList<Robinet>();
@@ -74,15 +73,9 @@ public class App extends Application {
 
         // Process
         LOG.info("Bubbles & Leaks a démarré");
-        capaciteMaxBaignoire = saisirValeur("Entrer la capacité de la baignoire (litres) : ");
-//        baignoire = new Baignoire(capaciteMaxBaignoire);
-        nbRobinets = saisirValeur("Entrer le nombre de robinets (unités) : ");
-//        robinets = creerListeRobinets(20);
-        nbFuites = saisirValeur("Entrer le nombre de fuites (unités) : ");
-//        fuites = creerListeFuites(10);
 
         // Création des threads
-        threadPool = Executors.newFixedThreadPool(nbRobinets + nbFuites);
+//        threadPool = Executors.newFixedThreadPool(nbRobinets + nbFuites);
 
 //        for (int i = 0; i < nbRobinets; i++) {
 //            Robinet robinet = new Robinet(robinets.get(i).getDebit(), baignoire);
@@ -142,46 +135,7 @@ public class App extends Application {
         threadPool.shutdown();
     }
 
-    /**
-     * Demande à l'utilisateur de saisir une valeur entière positive ou nulle.
-     * La saisie est répétée jusqu'à ce que l'utilisateur entre une valeur valide.
-     *
-     * @param message le message à afficher pour demander la saisie de la valeur
-     * @return la valeur entière saisie par l'utilisateur
-     */
-    private static int saisirValeur(String message) {
-        Scanner scanner = new Scanner(System.in);
-        boolean saisieCorrecte = false;
-        int valeur = 0;
-        do {
-            System.out.print("\n" + message);
-            if (scanner.hasNextInt()) {
-                valeur = scanner.nextInt();
-                if (valeur >= 0) {
-                    saisieCorrecte = true;
-                } else {
-                    System.out.println("Erreur : la valeur saisie n'est pas correcte.\n" +
-                            "Veuillez réessayer avec un entier >= 0");
-                    scanner.nextLine();
-                }
-            } else {
-                System.out.println("Erreur : la valeur saisie n'est pas correcte.\n" +
-                        "Veuillez réessayer avec un entier");
-                scanner.nextLine();
-            }
-        } while (!saisieCorrecte);
-//        scanner.close();
-        return valeur;
-    }
-
     // Getters et Setters
-    public static int getCapaciteMaxBaignoire() {
-        return capaciteMaxBaignoire;
-    }
-
-    public static void setCapaciteMaxBaignoire(int capaciteMaxBaignoire) {
-        App.capaciteMaxBaignoire = capaciteMaxBaignoire;
-    }
 
     public static int getNbRobinets() {
         return nbRobinets;

@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -46,6 +47,12 @@ public class BaignoireController {
     private ImageView imageBaignoire;
     @FXML
     private Rectangle rectBaignoire;
+    @FXML
+    private TextField textFieldCapBaignoire;
+    @FXML
+    private TextField textFieldNbRobinets;
+    @FXML
+    private TextField textFieldNbFuites;
     // Fin éléments FXML
 
     private Baignoire baignoire;
@@ -54,6 +61,7 @@ public class BaignoireController {
     private Fuite fuite;
     private List<Robinet> robinets;
     private List<Fuite> fuites;
+    private Outils outils = new Outils();
 
     /**
      * Constructeur de BaignoireController
@@ -74,7 +82,13 @@ public class BaignoireController {
      */
     @FXML
     protected void initialize() {
-        Baignoire baignoire = new Baignoire(App.getCapaciteMaxBaignoire());
+        // Saisie capacité, nb de robinets et nb de fuites
+        int capaciteMaxBaignoire = outils.saisirValeur(0, 1000, "Entrer la capacité de la baignoire (litres) : ");
+        int nbRobinets = outils.saisirValeur(0, 10, "Entrer le nombre de robinets (unités) : ");
+        int nbFuites = outils.saisirValeur(0, 10, "Entrer le nombre de fuites (unités) : ");
+//        robinets = creerListeRobinets(nbRobinets);
+//        fuites = creerListeFuites(nbFuites);
+        Baignoire baignoire = new Baignoire(capaciteMaxBaignoire);
 //        robinet = new Robinet((int) sldRobinet.getValue(), baignoire);
 //        fuite = new Fuite((int) sldFuite.getValue(), baignoire);
         lblDebitRobinet.textProperty().bind(Bindings.format("%.0f", sldRobinet.valueProperty()));
