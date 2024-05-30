@@ -19,4 +19,4 @@
 # Maven build directory
 ../target/
 # Javadoc
-../javadoc
+../javadoc/

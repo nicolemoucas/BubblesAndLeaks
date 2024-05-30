@@ -3,7 +3,9 @@ package fr.ul.miage.ncm.bubbles;
 public class Robinet implements Runnable {
     private int debit;
     private Baignoire baignoire;
+
     private final Thread thread;
+    private boolean isRunning = true;
 
     public Robinet(int debit, Baignoire baignoire) {
         this.debit = debit;
@@ -13,8 +15,9 @@ public class Robinet implements Runnable {
 
     @Override
     public void run() {
+        isRunning = true;
         System.out.println("in run Robinet");
-        while(true) {
+        while(isRunning) {
             baignoire.ajouterEau(debit);
             try {
                 Thread.sleep(1000);
@@ -25,7 +28,15 @@ public class Robinet implements Runnable {
     }
 
     public void start() {
-        thread.start();
+        isRunning = true;
+        System.out.println("thrad"+thread.isAlive());
+        if (!thread.isAlive()) {
+            thread.start();
+        }
+    }
+
+    public void stop() {
+        isRunning = false;
     }
 
     // Getters et Setters
@@ -36,5 +47,13 @@ public class Robinet implements Runnable {
 
     public void setDebit(int debit) {
         this.debit = debit;
+    }
+
+    public boolean getRunning() {
+        return isRunning;
+    }
+
+    public Thread getThread() {
+        return thread;
     }
 }

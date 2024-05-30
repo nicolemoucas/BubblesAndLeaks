@@ -27,12 +27,14 @@ public class App extends Application {
      * Logger qui permet d'afficher des informations pour suivre l'exécution du programme.
      */
     private static final Logger LOG = Logger.getLogger(App.class.getName());
+    private static Scene scene;
 
     /**
      * Injection de la classe Baignoire.
      */
-    private static Baignoire baignoire = null;
+//    private static Baignoire baignoire = null;
     private static final String fxmlPath = "/baignoire.fxml";
+
     private static int capaciteMaxBaignoire;
     private static int nbRobinets;
     private static int nbFuites;
@@ -73,46 +75,46 @@ public class App extends Application {
         // Process
         LOG.info("Bubbles & Leaks a démarré");
         capaciteMaxBaignoire = saisirValeur("Entrer la capacité de la baignoire (litres) : ");
-        baignoire = new Baignoire(capaciteMaxBaignoire);
+//        baignoire = new Baignoire(capaciteMaxBaignoire);
         nbRobinets = saisirValeur("Entrer le nombre de robinets (unités) : ");
-        robinets = creerListeRobinets(20);
+//        robinets = creerListeRobinets(20);
         nbFuites = saisirValeur("Entrer le nombre de fuites (unités) : ");
-        fuites = creerListeFuites(10);
+//        fuites = creerListeFuites(10);
 
         // Création des threads
         threadPool = Executors.newFixedThreadPool(nbRobinets + nbFuites);
 
-        for (int i = 0; i < nbRobinets; i++) {
-            Robinet robinet = new Robinet(robinets.get(i).getDebit(), baignoire);
-//            threadPool.submit(robinet);
-        }
-
-        for (int i = 0; i < nbFuites; i++) {
-            Fuite fuite = new Fuite(fuites.get(i).getDebit(), baignoire);
-//            threadPool.submit(fuite);
-        }
+//        for (int i = 0; i < nbRobinets; i++) {
+//            Robinet robinet = new Robinet(robinets.get(i).getDebit(), baignoire);
+////            threadPool.submit(robinet);
+//        }
+//
+//        for (int i = 0; i < nbFuites; i++) {
+//            Fuite fuite = new Fuite(fuites.get(i).getDebit(), baignoire);
+////            threadPool.submit(fuite);
+//        }
 
         launch(args);
         LOG.info("Bubbles & Leaks a fini son exécution");
     }
 
-    private static List<Fuite> creerListeFuites(int debitDefault) {
-        List<Fuite> fuites = new ArrayList<>();
-        for (int i = 0; i < nbFuites; i++) {
-            Fuite fuite = new Fuite(debitDefault, baignoire);
-            fuites.add(fuite);
-        }
-        return fuites;
-    }
-
-    private static List<Robinet> creerListeRobinets(int debitDefault) {
-        List<Robinet> robinets = new ArrayList<>();
-        for (int i = 0; i < nbRobinets; i++) {
-            Robinet robinet = new Robinet(debitDefault, baignoire);
-            robinets.add(robinet);
-        }
-        return robinets;
-    }
+//    private static List<Fuite> creerListeFuites(int debitDefault) {
+//        List<Fuite> fuites = new ArrayList<>();
+//        for (int i = 0; i < nbFuites; i++) {
+//            Fuite fuite = new Fuite(debitDefault, baignoire);
+//            fuites.add(fuite);
+//        }
+//        return fuites;
+//    }
+//
+//    private static List<Robinet> creerListeRobinets(int debitDefault) {
+//        List<Robinet> robinets = new ArrayList<>();
+//        for (int i = 0; i < nbRobinets; i++) {
+//            Robinet robinet = new Robinet(debitDefault, baignoire);
+//            robinets.add(robinet);
+//        }
+//        return robinets;
+//    }
 
     /**
      * Méthode qui lance l'application.
@@ -124,11 +126,11 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Bubbles & Leaks");
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            loader.setControllerFactory(c->{return new BaignoireController(baignoire, robinets, fuites);});
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+//            fxmlLoader.setControllerFactory(c->{return new BaignoireController(baignoire, robinets, fuites);});
+            scene = new Scene(fxmlLoader.load());
             primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -171,4 +173,30 @@ public class App extends Application {
 //        scanner.close();
         return valeur;
     }
+
+    // Getters et Setters
+    public static int getCapaciteMaxBaignoire() {
+        return capaciteMaxBaignoire;
+    }
+
+    public static void setCapaciteMaxBaignoire(int capaciteMaxBaignoire) {
+        App.capaciteMaxBaignoire = capaciteMaxBaignoire;
+    }
+
+    public static int getNbRobinets() {
+        return nbRobinets;
+    }
+
+    public static void setNbRobinets(int nbRobinets) {
+        App.nbRobinets = nbRobinets;
+    }
+
+    public static int getNbFuites() {
+        return nbFuites;
+    }
+
+    public static void setNbFuites(int nbFuites) {
+        App.nbFuites = nbFuites;
+    }
+    // Fin Getters et Setters
 }

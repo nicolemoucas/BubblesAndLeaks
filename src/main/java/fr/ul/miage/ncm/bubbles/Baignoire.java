@@ -12,24 +12,24 @@ public class Baignoire {
         this.niveauActuel = 0;
     }
 
-    public synchronized void ajouterEau(int debit) {
-        if (niveauActuel + debit <= capaciteMax) {
-            niveauActuel += debit;
-            System.out.printf("[ajouter eau] capacité baignoire : %d%n", niveauActuel);
-        } else {
+    public void ajouterEau(int debit) {
+        niveauActuel += debit;
+        if (niveauActuel >= capaciteMax) {
             niveauActuel = capaciteMax;
-            System.out.printf("[ajouter eau] capacité baignoire : %d%n", niveauActuel);
         }
+        System.out.printf("[ajouter eau] capacité baignoire : %d%n", niveauActuel);
     }
 
-    public synchronized void enleverEau(int debit) {
-        if (niveauActuel - debit >= 0) {
-            niveauActuel -= debit;
-            System.out.printf("[enlever eau] capacité baignoire : %d%n", niveauActuel);
-        } else {
+    public void enleverEau(int debit) {
+        niveauActuel -= debit;
+        if (niveauActuel <= 0) {
             niveauActuel = 0;
-            System.out.printf("[enlever eau] capacité baignoire : %d%n", niveauActuel);
         }
+        System.out.printf("[enlever eau] capacité baignoire : %d%n", niveauActuel);
+    }
+
+    public boolean estRemplie() {
+        return (niveauActuel <= capaciteMax);
     }
 
     // Getters et Setters

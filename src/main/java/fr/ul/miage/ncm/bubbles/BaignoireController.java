@@ -1,19 +1,29 @@
 package fr.ul.miage.ncm.bubbles;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Classe contrôleur pour la vue Baignoire.fxml
  */
 public class BaignoireController {
+    // Éléments FXML
+    @FXML
+    private BorderPane borderPane;
+    @FXML
+    private StackPane stackPaneBaignoire;
     @FXML
     private Button btnStart;
     @FXML
@@ -32,8 +42,14 @@ public class BaignoireController {
     private Label lblNiveauBaignoire;
     @FXML
     private Label lblCapaciteBaignoire;
+    @FXML
+    private ImageView imageBaignoire;
+    @FXML
+    private Rectangle rectBaignoire;
+    // Fin éléments FXML
 
     private Baignoire baignoire;
+    static ScheduledExecutorService thread;
     private Robinet robinet;
     private Fuite fuite;
     private List<Robinet> robinets;
@@ -42,11 +58,14 @@ public class BaignoireController {
     /**
      * Constructeur de BaignoireController
      */
-    public BaignoireController(Baignoire baignoire, List<Robinet> robinets, List<Fuite> fuites) {
-        this.baignoire = baignoire;
-        this.robinets = robinets;
-        this.fuites = fuites;
-        System.out.println("Baignore controller initialized");
+//    public BaignoireController(Baignoire baignoire, List<Robinet> robinets, List<Fuite> fuites) {
+//        this.baignoire = baignoire;
+//        this.robinets = robinets;
+//        this.fuites = fuites;
+//        System.out.println("Baignore controller initialized");
+//    }
+    public BaignoireController() {
+
     }
 
     /**
@@ -55,14 +74,16 @@ public class BaignoireController {
      */
     @FXML
     protected void initialize() {
-        robinet = new Robinet((int) sldRobinet.getValue(), baignoire);
-        fuite = new Fuite((int) sldFuite.getValue(), baignoire);
+        Baignoire baignoire = new Baignoire(App.getCapaciteMaxBaignoire());
+//        robinet = new Robinet((int) sldRobinet.getValue(), baignoire);
+//        fuite = new Fuite((int) sldFuite.getValue(), baignoire);
         lblDebitRobinet.textProperty().bind(Bindings.format("%.0f", sldRobinet.valueProperty()));
         lblDebitFuite.textProperty().bind(Bindings.format("%.0f", sldFuite.valueProperty()));
         lblCapaciteBaignoire.textProperty().bind(Bindings.format("%.0f", (double) baignoire.getCapaciteMax()));
         lblNiveauBaignoire.textProperty().bind(Bindings.format("%.0f", (double) baignoire.getNiveauActuel()));
         btnStop.setDisable(true);
         sliderBox.setVisible(false);
+        stackPaneBaignoire.getChildren().remove(rectBaignoire);
     }
 
     /**
@@ -71,9 +92,18 @@ public class BaignoireController {
      */
     @FXML
     private void demarrerSimulation() {
+        Instant top = Instant.now();
+        // Modification partie graphique
         btnStart.setDisable(true);
         btnStop.setDisable(false);
         sliderBox.setVisible(true);
+        stackPaneBaignoire.getChildren().remove(imageBaignoire);
+        stackPaneBaignoire.getChildren().add(rectBaignoire);
+        rectBaignoire.setHeight(0.0);
+
+        // TODo
+        Ajouteur ajouteur = new Ajouteur(baignoire, 5);
+        Enleveur enleveur = new Enleveur(baignoire, 1);
 
         for (Robinet rob : robinets) {
             rob.start();
@@ -94,7 +124,17 @@ public class BaignoireController {
         btnStart.setDisable(false);
         btnStop.setDisable(true);
         sliderBox.setVisible(false);
-        System.out.println("La simulation vient de terminer");
+        stackPaneBaignoire.getChildren().add(imageBaignoire);
+        stackPaneBaignoire.getChildren().remove(rectBaignoire);
+
+        for (Robinet rob : robinets) {
+            rob.stop();
+        }
+
+        for (Fuite fui : fuites) {
+            fui.stop();
+        }
+        System.out.println("La simulation vient de terminer"+robinets.get(0).getThread().isAlive()+", "+ robinets.get(0).getRunning());
     }
 
     @FXML

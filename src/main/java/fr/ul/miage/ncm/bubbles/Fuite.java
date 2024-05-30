@@ -4,6 +4,7 @@ public class Fuite implements Runnable {
     private int debit;
     private Baignoire baignoire;
     private final Thread thread;
+    private boolean isRunning = true;
 
     public Fuite(int debit, Baignoire baignoire) {
         this.debit = debit;
@@ -13,8 +14,9 @@ public class Fuite implements Runnable {
 
     @Override
     public void run() {
+        isRunning = true;
         System.out.println("in run Fuite");
-        while(true) {
+        while(isRunning) {
             baignoire.enleverEau(debit);
             try {
                 Thread.sleep(1000);
@@ -25,7 +27,14 @@ public class Fuite implements Runnable {
     }
 
     public void start() {
-        thread.start();
+        isRunning = true;
+        if (!thread.isAlive()) {
+            thread.start();
+        }
+    }
+
+    public void stop() {
+        isRunning = false;
     }
 
     // Getters et Setters
