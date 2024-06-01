@@ -3,10 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,10 +15,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ul.miage.ncm.bubbles.BaignoireController">
+<TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ul.miage.ncm.bubbles.BaignoireController">
     <tabs>
-      <Tab text="Démarrage">
+      <Tab fx:id="tabDemarrage" text="Démarrage">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fed2e6;">
                <center>
@@ -31,55 +32,29 @@
                      </BorderPane.margin>
                   </ImageView>
                </center>
-               <top>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Capacité baignoire" wrapText="true" />
-                              <TextField fx:id="textFieldCapBaignoire" />
-                           </children>
-                           <HBox.margin>
-                              <Insets left="120.0" right="25.0" />
-                           </HBox.margin></VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Nombre de robinets" wrapText="true" />
-                              <TextField fx:id="textFieldNbRobinets" />
-                           </children>
-                           <HBox.margin>
-                              <Insets left="25.0" right="25.0" />
-                           </HBox.margin></VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Nombre de fuites" wrapText="true" />
-                              <TextField fx:id="textFieldNbFuites" />
-                           </children>
-                           <HBox.margin>
-                              <Insets left="25.0" right="120.0" />
-                           </HBox.margin></VBox>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <BorderPane.margin>
-                        <Insets top="10.0" />
-                     </BorderPane.margin>
-                  </HBox>
-               </top>
                <bottom>
-                  <Button mnemonicParsing="false" pickOnBounds="false" style="-fx-background-color: eb7bc0;" text="Commencer !" BorderPane.alignment="CENTER">
+                  <Button fx:id="btnCommencer" mnemonicParsing="false" onAction="#toTabBaignoire" pickOnBounds="false" style="-fx-background-color: #eb7bc0;" text="Commencer !" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="50.0" />
                      </BorderPane.margin>
                   </Button>
                </bottom>
+               <top>
+                  <Label text="Bienvenue à Bubbles &amp; Leaks !" textFill="#000000cb" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="50.0" />
+                     </BorderPane.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </top>
             </BorderPane>
          </content>
       </Tab>
-        <Tab text="Baignoire">
+        <Tab fx:id="tabBaignoire" text="Baignoire">
             <content>
-                <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: 028090;">
+                <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #028090;">
                    <bottom>
                       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10">
                          <children>
@@ -89,21 +64,34 @@
                       </HBox>
                    </bottom>
                    <left>
-                      <VBox fx:id="sliderBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                      <VBox fx:id="sliderBox" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                          <children>
-                            <VBox prefHeight="200.0" prefWidth="100.0">
+                            <VBox prefHeight="300.0" prefWidth="200.0">
                                <children>
-                                  <Label text="Debit fuite" />
-                                  <Label fx:id="lblDebitFuite" />
+                                  <Label text="Debit fuite" textFill="WHITE" />
+                                  <Label fx:id="lblDebitFuite" textFill="WHITE" />
                                   <Slider fx:id="sldFuite" blockIncrement="1.0" max="10.0" onMouseReleased="#fuiteDrag" />
+                              <ListView fx:id="listViewFuites" onMouseReleased="#listViewFuiSelect" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #028090;">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </ListView>
                                </children>
                             </VBox>
-                            <VBox prefHeight="200.0" prefWidth="100.0">
+                            <VBox prefHeight="300.0" prefWidth="200.0">
                                <children>
-                                  <Label text="Debit robinet" />
-                                  <Label fx:id="lblDebitRobinet" />
+                                  <Label text="Debit robinet" textFill="WHITE" />
+                                  <Label fx:id="lblDebitRobinet" textFill="WHITE" />
                                   <Slider fx:id="sldRobinet" blockIncrement="1.0" max="10.0" onMouseReleased="#robinetDrag" />
+                              <ListView fx:id="listViewRobinets" onMouseReleased="#listViewRobSelect" prefHeight="300.0" prefWidth="200.0" style="-fx-background-color: #028090;">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </ListView>
                                </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                             </VBox>
                          </children>
                       </VBox>
@@ -111,15 +99,15 @@
                    <right>
                       <VBox prefHeight="300.0" prefWidth="141.0" BorderPane.alignment="CENTER">
                          <children>
-                            <Label prefHeight="17.0" prefWidth="200.0" text="Niveau baignoire (lt) :" />
-                            <Label fx:id="lblNiveauBaignoire" />
-                            <Label text="Capacité baignoire (lt) : " />
-                            <Label fx:id="lblCapaciteBaignoire" />
+                            <Label prefHeight="17.0" prefWidth="200.0" text="Niveau baignoire (lt) :" textFill="WHITE" />
+                            <Label fx:id="lblNiveauBaignoire" textFill="WHITE" />
+                            <Label text="Capacité baignoire (lt) : " textFill="WHITE" />
+                            <Label fx:id="lblCapaciteBaignoire" textFill="WHITE" />
                          </children>
                       </VBox>
                    </right>
                    <center>
-                      <StackPane fx:id="stackPaneBaignoire" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: 028090;" BorderPane.alignment="CENTER">
+                      <StackPane fx:id="stackPaneBaignoire" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #028090;" BorderPane.alignment="CENTER">
                          <children>
                             <ImageView fx:id="imageBaignoire" fitHeight="200.0" fitWidth="200.0">
                                <image>
@@ -137,7 +125,7 @@
                 </BorderPane>
             </content>
         </Tab>
-        <Tab text="Statistiques">
+        <Tab fx:id="tabStatistiques" text="Statistiques">
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>

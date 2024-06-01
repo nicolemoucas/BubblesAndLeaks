@@ -33,17 +33,12 @@ public class Baignoire {
     }
 
     // Getters et Setters
-
     public int getCapaciteMax() {
         return capaciteMax;
     }
 
-    public void setCapaciteMax(int capaciteMax) {
-        this.capaciteMax = capaciteMax;
-    }
     /**
      * Renvoie la capacité actuelle de la baignoire.
-     *
      * @return la capacité actuelle de la baignoire en litres.
      */
     public int getNiveauActuel() {
@@ -52,13 +47,11 @@ public class Baignoire {
 
     /**
      * Définit la capacité actuelle de la baignoire.
-     *
      * @param niveauActuel la nouvelle capacité actuelle de la baignoire en litres.
      */
     public void setNiveauActuel(int niveauActuel) {
         this.niveauActuel = niveauActuel;
     }
-
     // Fin Getters et Setters
 
 }

@@ -1,43 +1,50 @@
 package fr.ul.miage.ncm.bubbles;
 
-public class Fuite implements Runnable {
-    private int debit;
-    private Baignoire baignoire;
-    private final Thread thread;
-    private boolean isRunning = true;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 
-    public Fuite(int debit, Baignoire baignoire) {
-        this.debit = debit;
+import java.util.logging.Logger;
+
+public class Fuite extends ScheduledService<Baignoire> {
+    private static final Logger LOG = Logger.getLogger(Fuite.class.getName());
+    private Baignoire baignoire;
+
+    private int debit;
+    private int idFuite;
+
+    public Fuite(int idFuite, int debit, Baignoire baignoire){
+        this.idFuite = idFuite;
         this.baignoire = baignoire;
-        this.thread = new Thread(this);
+        this.debit = debit;
     }
 
     @Override
-    public void run() {
-        isRunning = true;
-        System.out.println("in run Fuite");
-        while(isRunning) {
-            baignoire.enleverEau(debit);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    protected Task<Baignoire> createTask() {
+
+        return new Task<Baignoire>() {
+            @Override
+            protected Baignoire call() throws Exception {
+                baignoire.enleverEau(debit);
+                return baignoire;
             }
-        }
+        };
     }
 
-    public void start() {
-        isRunning = true;
-        if (!thread.isAlive()) {
-            thread.start();
-        }
-    }
-
-    public void stop() {
-        isRunning = false;
+    @Override
+    public String toString() {
+        return idFuite + ". débit : " + debit + " l/s";
     }
 
     // Getters et Setters
+
+
+    public Baignoire getBaignoire() {
+        return baignoire;
+    }
+
+    public void setBaignoire(Baignoire baignoire) {
+        this.baignoire = baignoire;
+    }
 
     public int getDebit() {
         return debit;
@@ -46,4 +53,13 @@ public class Fuite implements Runnable {
     public void setDebit(int debit) {
         this.debit = debit;
     }
+
+    public int getIdFuite() {
+        return idFuite;
+    }
+
+    public void setIdFuite(int idFuite) {
+        this.idFuite = idFuite;
+    }
+    // End Getters et Setters
 }
