@@ -79,7 +79,7 @@ public class BaignoireController {
     ListView<Fuite> listViewFuites = new ListView<>();
     // Fin éléments FXML
 
-    static ScheduledExecutorService thread;
+    ScheduledExecutorService thread;
     private List<Robinet> robinets;
     private List<Fuite> fuites;
     private Outils outils = new Outils();
@@ -92,6 +92,8 @@ public class BaignoireController {
     ScheduledExecutorService pool;
     Baignoire baignoire;
     List<Callable<Object>> taches = new ArrayList<>();
+    List<Integer> niveauBaignoire = new ArrayList<>();
+//    List<>
 
     /**
      * Méthode qui initialise le contrôleur et crée un objet Baignoire, elle est appelée
@@ -197,13 +199,18 @@ public class BaignoireController {
             Callable<Object> tache = () -> {
                 fui.setOnSucceeded((WorkerStateEvent e) -> {
                     rectBaignoire.setHeight(baignoire.getNiveauActuel());
+                    // Mise à jour des données pour le CSV
+                    niveauBaignoire.add(baignoire.getNiveauActuel());
+                    // TODO mettre à jour la durée
+                    System.out.println("duration" +java.time.Duration.between(top, Instant.now()).toMillis());
+                    // Vérifier si baignoire remplie ou vide
                     if(baignoire.estRemplie()) {
                         java.time.Duration duration = java.time.Duration.between(top, Instant.now());
                         System.out.printf("La baignoire est prête pour un bain !%nTemps de remplissage : %dms.",
                                 duration.toMillis());
                         fui.cancel(); // Arrêter fuite
                         // TODO remettre à zéro
-                        btnStart.setDisable(false); // Active bouton Démarrer simulation
+//                        btnStart.setDisable(false); // Active bouton Démarrer simulation
                         btnStop.setDisable(true);
 //                        simulationActive = false;
                     } else if (baignoire.estVide()) {
@@ -239,9 +246,10 @@ public class BaignoireController {
                                 duration.toMillis());
                         rob.cancel(); // Arrêter robinet
                         // TODO remettre à zéro
-                        btnStart.setDisable(false); // Active bouton Démarrer simulation
-                        btnStop.setDisable(true);
+//                        btnStart.setDisable(false); // Active bouton Démarrer simulation
+//                        btnStop.setDisable(true);
 //                        simulationActive = false;
+                        terminerSimulation();
                     } else if (baignoire.estVide()) {
                         if (nbEssaisBaignoireVide <= App.MAX_ESSAIS_BAIGNOIRE_VIDE) {
                             nbEssaisBaignoireVide ++;
@@ -305,20 +313,20 @@ public class BaignoireController {
     @FXML
     void terminerSimulation() {
         simulationActive = false;
-        btnStart.setDisable(false);
         btnStop.setDisable(true);
 
-        stackPaneBaignoire.getChildren().remove(rectBaignoire);
-        if (!stackPaneBaignoire.getChildren().contains(imageBaignoire)) {
-            stackPaneBaignoire.getChildren().add(imageBaignoire);
-        }
-        stackPaneBaignoire.getChildren().remove(rectBaignoire);
+//        stackPaneBaignoire.getChildren().remove(rectBaignoire);
+//        if (!stackPaneBaignoire.getChildren().contains(imageBaignoire)) {
+//            stackPaneBaignoire.getChildren().add(imageBaignoire);
+//        }
         sldRobinet.setValue(sldRobinet.getMin());
         sldFuite.setValue(sldFuite.getMin());
+        listViewFuites.setDisable(true);
+        listViewRobinets.setDisable(true);
         // TODO remove in demarrer
-        sldFuite.setVisible(true);
-        lblDebitFuite.setVisible(true);
-        lblTitleDebitFuite.setText("Débit fuites");
+//        sldFuite.setVisible(true);
+//        lblDebitFuite.setVisible(true);
+//        lblTitleDebitFuite.setText("Débit fuites");
         // todo stop robinets
         System.out.println("\nLa simulation vient de terminer. 🛀🏻");
         // TODO vérifier si c'est bon
