@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Outils {
+    private final String csvPath = "csv/simulationBaignoire.csv";
+
     /**
      * Demande à l'utilisateur de saisir une valeur entière positive ou nulle.
      * La saisie est répétée jusqu'à ce que l'utilisateur entre une valeur valide.
@@ -32,7 +34,6 @@ public class Outils {
                 scanner.nextLine();
             }
         } while (!saisieCorrecte);
-//        scanner.close();
         return valeur;
     }
 
@@ -53,4 +54,7 @@ public class Outils {
             }
             return robinets;
         }
+
+    public void exporterCSV(List<Integer> niveauBaignoire, List<Long> temps) {
+    }
 }

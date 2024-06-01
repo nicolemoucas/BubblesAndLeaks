@@ -228,26 +228,16 @@ public class BaignoireController {
 
     /**
      * Méthode qui met fin à la simulation de la baignoire quand le bouton "Arrêter" est
-     * cliqué par l'utilisateur.
+     * cliqué par l'utilisateur, quand la baignoire est remplie ou quand elle est vidée.
      */
     @FXML
     void terminerSimulation() {
         simulationActive = false;
         btnStop.setDisable(true);
-
-//        stackPaneBaignoire.getChildren().remove(rectBaignoire);
-//        if (!stackPaneBaignoire.getChildren().contains(imageBaignoire)) {
-//            stackPaneBaignoire.getChildren().add(imageBaignoire);
-//        }
         sldRobinet.setValue(sldRobinet.getMin());
         sldFuite.setValue(sldFuite.getMin());
         listViewFuites.setDisable(true);
         listViewRobinets.setDisable(true);
-        // TODO remove in demarrer
-//        sldFuite.setVisible(true);
-//        lblDebitFuite.setVisible(true);
-//        lblTitleDebitFuite.setText("Débit fuites");
-        // todo stop robinets
         System.out.println("\nLa simulation vient de terminer. 🛀🏻");
         // TODO vérifier si c'est bon
         for (Robinet rob : robinets) {
@@ -257,6 +247,7 @@ public class BaignoireController {
             fui.cancel();
         }
         pool.shutdown();
+        outils.exporterCSV(niveauBaignoire, temps);
     }
 
     @FXML

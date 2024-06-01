@@ -65,6 +65,7 @@ public class App extends Application {
 
         launch(args);
         LOG.info("Bubbles & Leaks a fini son exécution !");
+        System.out.println("bye bye driver");
         // Fin Process
     }
 
