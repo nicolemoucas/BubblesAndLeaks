@@ -1,6 +1,7 @@
 package fr.ul.miage.ncm.bubbles;
 
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.ScheduledService;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -91,7 +92,7 @@ public class BaignoireController {
     Baignoire baignoire;
     List<Callable<Object>> taches = new ArrayList<>();
     List<Integer> niveauBaignoire = new ArrayList<>();
-//    List<>
+    List<Long> temps = new ArrayList<>();
 
     /**
      * Méthode qui initialise le contrôleur et crée un objet Baignoire, elle est appelée
@@ -171,11 +172,10 @@ public class BaignoireController {
         lblTitleDebitFuite.setText("Réparer une fuite");
 
         // Initialisation des threads
-        if (!simulationActive) {
-            taches.addAll(initialiserThreadsRobinet(top));
-            taches.addAll(initialiserThreadsFuites(top));
-        }
-
+//        taches.addAll(initialiserThreadsRobinet(top));
+//        taches.addAll(initialiserThreadsFuites(top));
+        taches.addAll(initialiserThreads(robinets, top));
+        taches.addAll(initialiserThreads(fuites, top));
         // Lancer tous les threads en même temps
         try {
             pool.invokeAll(taches);
@@ -188,119 +188,43 @@ public class BaignoireController {
         System.out.println("\nLa simulation vient de démarrer. 🫧");
     }
 
-    private Collection<? extends Callable<Object>> initialiserThreadsFuites(Instant top) {
-        List<Callable<Object>> tachesFuites = new ArrayList<>();
+    private <T extends ScheduledService<Baignoire>> Collection<? extends Callable<Object>>
+    initialiserThreads(List<? extends T> elements, Instant top) {
+            List<Callable<Object>> taches = new ArrayList<>();
 
-        for (Fuite fui : fuites) {
-            Callable<Object> tache = () -> {
-                fui.setOnSucceeded((WorkerStateEvent e) -> {
-                    rectBaignoire.setHeight(baignoire.getNiveauActuel());
-                    // Mise à jour des données pour le CSV
-                    niveauBaignoire.add(baignoire.getNiveauActuel());
-                    // TODO mettre à jour la durée
-                    System.out.println("duration" +java.time.Duration.between(top, Instant.now()).toMillis());
-                    // Vérifier si baignoire remplie ou vide
-                    if(baignoire.estRemplie()) {
-                        java.time.Duration duration = java.time.Duration.between(top, Instant.now());
-                        System.out.printf("La baignoire est prête pour un bain !%nTemps de remplissage : %dms.",
-                                duration.toMillis());
-                        fui.cancel(); // Arrêter fuite
-                        // TODO remettre à zéro
-//                        btnStart.setDisable(false); // Active bouton Démarrer simulation
-                        btnStop.setDisable(true);
-//                        simulationActive = false;
-                    } else if (baignoire.estVide()) {
-                        if (nbEssaisBaignoireVide <= App.MAX_ESSAIS_BAIGNOIRE_VIDE) {
-                            nbEssaisBaignoireVide ++;
-                        } else {
-                            System.out.println("""
+            for (T elem : elements) {
+                Callable<Object> tache = () -> {
+                    java.time.Duration duration = java.time.Duration.between(top, Instant.now());
+                    elem.setOnSucceeded((WorkerStateEvent e) -> {
+                        rectBaignoire.setHeight(baignoire.getNiveauActuel());
+                        // Mise à jour des données pour le CSV
+                        niveauBaignoire.add(baignoire.getNiveauActuel());
+                        temps.add(duration.toMillis());
+
+                        if(baignoire.estRemplie()) {
+                            System.out.printf("La baignoire est prête pour un bain !%nTemps de remplissage : %dms.",
+                                    duration.toMillis());
+                            elem.cancel(); // Arrêter fuite ou robinet
+                            terminerSimulation();
+                        } else if (baignoire.estVide()) {
+                            if (nbEssaisBaignoireVide <= App.MAX_ESSAIS_BAIGNOIRE_VIDE) {
+                                nbEssaisBaignoireVide ++;
+                            } else {
+                                System.out.println("""
                                     Les fuites empêchent le remplissage de la baignoire.
                                     La simulation sera arrêtée.""");
-                            terminerSimulation();
+                                terminerSimulation();
+                            }
                         }
-                    }
-                });
-                fui.setPeriod(Duration.millis(100));
-                fui.start();
-                return null;
-            };
-            tachesFuites.add(tache);
+                    });
+                    elem.setPeriod(Duration.millis(100));
+                    elem.start();
+                    return null;
+                };
+                taches.add(tache);
+            }
+            return taches;
         }
-        return tachesFuites;
-    }
-// TODO gerre stable
-    private List<Callable<Object>> initialiserThreadsRobinet(Instant top) {
-        List<Callable<Object>> tachesRob = new ArrayList<>();
-
-        for (Robinet rob : robinets) {
-            Callable<Object> tache = () -> {
-                rob.setOnSucceeded((WorkerStateEvent e) -> {
-                    rectBaignoire.setHeight(baignoire.getNiveauActuel());
-                    if (baignoire.estRemplie()) {
-                        java.time.Duration duration = java.time.Duration.between(top, Instant.now());
-                        System.out.printf("La baignoire est prête pour un bain !%nTemps de remplissage : %dms.",
-                                duration.toMillis());
-                        rob.cancel(); // Arrêter robinet
-                        // TODO remettre à zéro
-//                        btnStart.setDisable(false); // Active bouton Démarrer simulation
-//                        btnStop.setDisable(true);
-//                        simulationActive = false;
-                        terminerSimulation();
-                    } else if (baignoire.estVide()) {
-                        if (nbEssaisBaignoireVide <= App.MAX_ESSAIS_BAIGNOIRE_VIDE) {
-                            nbEssaisBaignoireVide ++;
-                        } else {
-                            System.out.println("""
-                                    Les fuites empêchent le remplissage de la baignoire.
-                                    La simulation sera arrêtée.""");
-                            terminerSimulation();
-                        }
-                    }
-                });
-                rob.setPeriod(Duration.millis(100));
-                rob.start();
-                return null;
-            };
-            tachesRob.add(tache);
-        }
-        return tachesRob;
-    }
-
-//    private List<Callable<Object>> initialiserThreadsObjets(Instant top, List<Object> objets) {private <T extends ScheduledService<Baignoire>> Collection<? extends Callable<Object>> initialiserThreads(List<? extends T> elements, Instant top) {
-//            List<Callable<Object>> taches = new ArrayList<>();
-//
-//            for (T elem : elements) {
-//                Callable<Object> tache = () -> {
-//                    elem.setOnSucceeded((WorkerStateEvent e) -> {
-//                        rectBaignoire.setHeight(baignoire.getNiveauActuel());
-//                        if(baignoire.estRemplie()) {
-//                            java.time.Duration duration = java.time.Duration.between(top, Instant.now());
-//                            System.out.printf("La baignoire est prête pour un bain !%nTemps de remplissage : %dms.",
-//                                    duration.toMillis());
-//                            elem.cancel(); // Arrêter fuite ou robinet
-//                            // TODO remettre à zéro
-//                            btnStart.setDisable(false); // Active bouton Démarrer simulation
-//                            btnStop.setDisable(true);
-//                            simulationActive = false;
-//                        } else if (baignoire.estVide()) {
-//                            if (nbEssaisBaignoireVide <= App.MAX_ESSAIS_BAIGNOIRE_VIDE) {
-//                                nbEssaisBaignoireVide ++;
-//                            } else {
-//                                System.out.println("""
-//                                    Les fuites empêchent le remplissage de la baignoire.
-//                                    La simulation sera arrêtée.""");
-//                                terminerSimulation();
-//                            }
-//                        }
-//                    });
-//                    elem.setPeriod(Duration.millis(100));
-//                    elem.start();
-//                    return null;
-//                };
-//                taches.add(tache);
-//            }
-//            return taches;
-//        }
 
     /**
      * Méthode qui met fin à la simulation de la baignoire quand le bouton "Arrêter" est
