@@ -70,8 +70,6 @@ public class BaignoireController {
     @FXML
     Tab tabDemarrage;
     @FXML
-    Tab tabStatistiques;
-    @FXML
     Button btnCommencer;
     @FXML
     ListView<Robinet> listViewRobinets = new ListView<>();
@@ -131,7 +129,6 @@ public class BaignoireController {
         stackPaneBaignoire.getChildren().remove(rectBaignoire);
         tabDemarrage.setDisable(false);
         tabBaignoire.setDisable(true);
-        tabStatistiques.setDisable(true);
         return baignoire;
     }
 
@@ -152,7 +149,6 @@ public class BaignoireController {
         tabPane.getSelectionModel().select(tabBaignoire);
         tabDemarrage.setDisable(true);
         tabBaignoire.setDisable(false);
-        tabStatistiques.setDisable(false);
     }
 
     /**
