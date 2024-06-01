@@ -15,11 +15,13 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Logger;
 
 /**
  * Classe contrôleur pour la vue Baignoire.fxml
  */
 public class BaignoireController {
+    private static final Logger LOG = Logger.getLogger(App.class.getName());
     // Éléments FXML
     @FXML
     TabPane tabPane;
@@ -35,6 +37,10 @@ public class BaignoireController {
     Slider sldFuite;
     @FXML
     Label lblDebitFuite;
+    @FXML
+    Label lblTitleDebitFuite;
+    @FXML
+    Label lblTitleDebitRob;
     @FXML
     Slider sldRobinet;
     @FXML
@@ -78,6 +84,7 @@ public class BaignoireController {
     int nbFuites;
     int debitDefaultRobinet = 5;
     int debitDefaultFuite = 2;
+    boolean simulationActive = false;
 
     /**
      * Méthode qui initialise le contrôleur et crée un objet Baignoire, elle est appelée
@@ -150,12 +157,16 @@ public class BaignoireController {
     @FXML
     void demarrerSimulation() {
         Instant top = Instant.now();
+        simulationActive = true;
         // Modification partie graphique
         btnStart.setDisable(true);
         btnStop.setDisable(false);
         stackPaneBaignoire.getChildren().remove(imageBaignoire);
         stackPaneBaignoire.getChildren().add(rectBaignoire);
         rectBaignoire.setHeight(0.0);
+        sldFuite.setVisible(false);
+        lblDebitFuite.setVisible(false);
+        lblTitleDebitFuite.setText("Réparer une fuite");
 // debut, boucher trou, changer debit, arrêt
         // Initialisation des threads
 //        for (Robinet rob : robinets) {
@@ -175,6 +186,7 @@ public class BaignoireController {
      */
     @FXML
     void terminerSimulation() {
+        simulationActive = false;
         btnStart.setDisable(false);
         btnStop.setDisable(true);
 //        sliderBox.setVisible(false);
@@ -182,6 +194,10 @@ public class BaignoireController {
         stackPaneBaignoire.getChildren().remove(rectBaignoire);
         sldRobinet.setValue(sldRobinet.getMin());
         sldFuite.setValue(sldFuite.getMin());
+        // TODO remove in demarrer
+        sldFuite.setVisible(true);
+        lblDebitFuite.setVisible(true);
+        lblTitleDebitFuite.setText("Débit fuites");
         // todo stop robinets
         System.out.println("La simulation vient de terminer");
     }
@@ -194,7 +210,7 @@ public class BaignoireController {
         robinet.setDebit(nouveauDebit);
         sldRobinet.setDisable(true);
         sldRobinet.setValue(sldRobinet.getMin());
-        System.out.printf("debit du robinet %d : %d%n", robinet.getIdRobinet(), robinet.getDebit());
+        System.out.printf("Débit du robinet %d : %d%n", robinet.getIdRobinet(), robinet.getDebit());
         try {Thread.sleep(500); // Attendre 0.5 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -210,7 +226,7 @@ public class BaignoireController {
         fuite.setDebit(nouveauDebit);
         sldFuite.setDisable(true);
         sldFuite.setValue(sldFuite.getMin());
-        System.out.printf("debit de la fuite %d : %d%n", fuite.getIdFuite(), fuite.getDebit());
+        System.out.printf("Débit de la fuite %d : %d%n", fuite.getIdFuite(), fuite.getDebit());
         try {Thread.sleep(500); // Attendre 0.5 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -220,7 +236,11 @@ public class BaignoireController {
 
     @FXML
     void listViewFuiSelect() {
-        sldFuite.setDisable(false);
+        if (!simulationActive) {
+            sldFuite.setDisable(false);
+        } else {
+            reparerFuite(listViewFuites.getSelectionModel().getSelectedIndex());
+        }
     }
 
     @FXML
@@ -228,5 +248,10 @@ public class BaignoireController {
         sldRobinet.setDisable(false);
     }
 
-
+    private void reparerFuite(int idFuite) {
+        Fuite fuite = fuites.get(idFuite);
+        fuite.setDebit(0);
+        System.out.printf("Débit de la fuite %d : %d%n", fuite.getIdFuite(), fuite.getDebit());
+        listViewFuites.getSelectionModel().clearSelection();
+    }
 }

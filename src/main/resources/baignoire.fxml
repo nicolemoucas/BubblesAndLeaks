@@ -68,7 +68,7 @@
                          <children>
                             <VBox prefHeight="300.0" prefWidth="200.0">
                                <children>
-                                  <Label text="Debit fuite" textFill="WHITE" />
+                                  <Label fx:id="lblTitleDebitFuite" text="Débit fuites" textFill="WHITE" />
                                   <Label fx:id="lblDebitFuite" textFill="WHITE" />
                                   <Slider fx:id="sldFuite" blockIncrement="1.0" max="10.0" onMouseReleased="#fuiteDrag" />
                               <ListView fx:id="listViewFuites" onMouseReleased="#listViewFuiSelect" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #028090;">
@@ -80,7 +80,7 @@
                             </VBox>
                             <VBox prefHeight="300.0" prefWidth="200.0">
                                <children>
-                                  <Label text="Debit robinet" textFill="WHITE" />
+                                  <Label fx:id="lblTitleDebitRob" text="Débit robinets" textFill="WHITE" />
                                   <Label fx:id="lblDebitRobinet" textFill="WHITE" />
                                   <Slider fx:id="sldRobinet" blockIncrement="1.0" max="10.0" onMouseReleased="#robinetDrag" />
                               <ListView fx:id="listViewRobinets" onMouseReleased="#listViewRobSelect" prefHeight="300.0" prefWidth="200.0" style="-fx-background-color: #028090;">
