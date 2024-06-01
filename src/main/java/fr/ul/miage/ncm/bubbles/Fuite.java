@@ -20,17 +20,10 @@ public class Fuite extends ScheduledService<Baignoire> {
 
     @Override
     protected Task<Baignoire> createTask() {
-//        return new Task<Baignoire>() {
-//            @Override
-//            protected Baignoire call() throws Exception {
-//                baignoire.enleverEau(debit, idFuite);
-//                return baignoire;
-//            }
-//        };
         return new Task<Baignoire>() {
             @Override
             protected Baignoire call() throws Exception {
-                synchronized (baignoire) { // synchronisé avec la ressource critique baignoire
+                synchronized (baignoire) { // Synchronisé avec la ressource critique baignoire
                     baignoire.enleverEau(debit, idFuite);
                 }
                 return baignoire;
@@ -44,15 +37,9 @@ public class Fuite extends ScheduledService<Baignoire> {
     }
 
     // Getters et Setters
-
-
     public Baignoire getBaignoire() {
         return baignoire;
     }
-
-//    public void setBaignoire(Baignoire baignoire) {
-//        this.baignoire = baignoire;
-//    }
 
     public int getDebit() {
         return debit;

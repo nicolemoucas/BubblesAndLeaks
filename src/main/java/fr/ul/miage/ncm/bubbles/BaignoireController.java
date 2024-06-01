@@ -78,8 +78,7 @@ public class BaignoireController {
     @FXML
     ListView<Fuite> listViewFuites = new ListView<>();
     // Fin éléments FXML
-//    private Robinet robinet;
-//    private Fuite fuite;
+
     static ScheduledExecutorService thread;
     private List<Robinet> robinets;
     private List<Fuite> fuites;
@@ -173,9 +172,7 @@ public class BaignoireController {
         lblDebitFuite.setVisible(false);
         lblTitleDebitFuite.setText("Réparer une fuite");
 
-// debut, boucher trou, changer debit, arrêt
         // Initialisation des threads
-
         if (!simulationActive) {
             taches.addAll(initialiserThreadsRobinet(top));
             taches.addAll(initialiserThreadsFuites(top));
