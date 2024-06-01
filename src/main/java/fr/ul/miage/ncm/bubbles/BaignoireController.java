@@ -26,12 +26,14 @@ import java.util.logging.Logger;
  * Classe contrôleur pour la vue Baignoire.fxml
  */
 public class BaignoireController {
-    private static final Logger LOG = Logger.getLogger(App.class.getName());
+    /**
+     * Logger pour la classe BaignoireController.
+     */
+    private static final Logger LOG = Logger.getLogger(BaignoireController.class.getName());
+
     // Éléments FXML
     @FXML
     TabPane tabPane;
-    @FXML
-    BorderPane borderPane;
     @FXML
     StackPane stackPaneBaignoire;
     @FXML
@@ -45,13 +47,9 @@ public class BaignoireController {
     @FXML
     Label lblTitleDebitFuite;
     @FXML
-    Label lblTitleDebitRob;
-    @FXML
     Slider sldRobinet;
     @FXML
     Label lblDebitRobinet;
-    @FXML
-    VBox sliderBox;
     @FXML
     Label lblNiveauBaignoire;
     @FXML
@@ -61,24 +59,15 @@ public class BaignoireController {
     @FXML
     Rectangle rectBaignoire;
     @FXML
-    TextField textFieldCapBaignoire;
-    @FXML
-    TextField textFieldNbRobinets;
-    @FXML
-    TextField textFieldNbFuites;
-    @FXML
     Tab tabBaignoire;
     @FXML
     Tab tabDemarrage;
-    @FXML
-    Button btnCommencer;
     @FXML
     ListView<Robinet> listViewRobinets = new ListView<>();
     @FXML
     ListView<Fuite> listViewFuites = new ListView<>();
     // Fin éléments FXML
 
-    ScheduledExecutorService thread;
     private List<Robinet> robinets;
     private List<Fuite> fuites;
     private Outils outils = new Outils();
@@ -93,6 +82,8 @@ public class BaignoireController {
     List<Callable<Object>> taches = new ArrayList<>();
     List<Integer> niveauBaignoire = new ArrayList<>();
     List<Long> temps = new ArrayList<>();
+
+    // TODO ajouter visuel fuites et robinets
 
     /**
      * Méthode qui initialise le contrôleur et crée un objet Baignoire, elle est appelée
@@ -118,6 +109,12 @@ public class BaignoireController {
         pool = Executors.newScheduledThreadPool(nbRobinets + nbFuites);
     }
 
+    /**
+     * Méthode qui initialise des éléments FXML tels que les labels, sliders change d'onglet et fait
+     * les bindings des valeurs aux éléments graphiques.
+     * @param baignoire L'objet baignoire à initialiser.
+     * @return L'objet baignoire intialisé.
+     */
     private Baignoire initialiserElementsFXML(Baignoire baignoire) {
         lblDebitRobinet.textProperty().bind(Bindings.format("%.0f", sldRobinet.valueProperty()));
         lblDebitFuite.textProperty().bind(Bindings.format("%.0f", sldFuite.valueProperty()));
@@ -133,18 +130,29 @@ public class BaignoireController {
         return baignoire;
     }
 
+    /**
+     * Méthode qui initialise la liste des fuites dans le listView à partir de la liste de Fuite.
+     * @param fuites La liste des fuites.
+     */
     private void initialiserListeFuites(List<Fuite> fuites) {
-        // vider liste s'il y a encore des fuites
+        // Vider liste s'il y a encore des fuites
         listViewFuites.getItems().clear();
         listViewFuites.getItems().setAll(fuites);
     }
 
+    /**
+     * Méthode qui initialise la liste des robinets dans le listView à partir de la liste de Robinet.
+     * @param robinets La liste des robinets.
+     */
     private void initialiserListeRobinets(List<Robinet> robinets) {
-        // vider liste s'il y a encore des robinets
+        // Vider liste s'il y a encore des robinets
         listViewRobinets.getItems().clear();
         listViewRobinets.getItems().setAll(robinets);
     }
 
+    /**
+     * Méthode qui change l'onglet sélectionné et désactive l'onglet de démarrage.
+     */
     @FXML
     void toTabBaignoire() {
         tabPane.getSelectionModel().select(tabBaignoire);
@@ -175,8 +183,6 @@ public class BaignoireController {
         lblTitleDebitFuite.setText("Réparer une fuite");
 
         // Initialisation des threads
-//        taches.addAll(initialiserThreadsRobinet(top));
-//        taches.addAll(initialiserThreadsFuites(top));
         taches.addAll(initialiserThreads(robinets, top));
         taches.addAll(initialiserThreads(fuites, top));
         // Lancer tous les threads en même temps
@@ -191,6 +197,13 @@ public class BaignoireController {
         System.out.println("\nLa simulation vient de démarrer. 🫧");
     }
 
+    /**
+     * Méthode qui initialise les threads pour les robinets et les fuites.
+     * @param elements  La liste de robinets ou de fuites.
+     * @param top       L'instant de début de la simulation.
+     * @param <T>       Le type de la liste (Robinet ou Fuite).
+     * @return          La collection de Callable représentant les tâches des threads.
+     */
     private <T extends ScheduledService<Baignoire>> Collection<? extends Callable<Object>>
     initialiserThreads(List<? extends T> elements, Instant top) {
             List<Callable<Object>> taches = new ArrayList<>();
@@ -253,6 +266,9 @@ public class BaignoireController {
         outils.exporterCSV(niveauBaignoire, temps);
     }
 
+    /**
+     * Méthode qui gère la modification du débit pour un robinet sélectionné.
+     */
     @FXML
     void robinetDrag() {
         int idRob = listViewRobinets.getSelectionModel().getSelectedIndex();
@@ -269,6 +285,9 @@ public class BaignoireController {
         listViewRobinets.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Méthode qui gère la modification du débit pour une fuite sélectionnée.
+     */
     @FXML
     void fuiteDrag() {
         int idFuite = listViewFuites.getSelectionModel().getSelectedIndex();
@@ -285,6 +304,11 @@ public class BaignoireController {
         listViewFuites.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Méthode qui gère la sélection d'une fuite dans la liste et active le slider pour modifier
+     * son débit s'il n'y a pas de simulation en cours. Sinon, elle appelle la méthode qui répare
+     * la fuite.
+     */
     @FXML
     void listViewFuiSelect() {
         if (!simulationActive) {
@@ -294,11 +318,19 @@ public class BaignoireController {
         }
     }
 
+    /**
+     * Méthode qui gère la sélection d'un robinet dans la liste et active le slider pour modifier
+     * son débit.
+     */
     @FXML
     void listViewRobSelect() {
         sldRobinet.setDisable(false);
     }
 
+    /**
+     * Méthode qui permet de réparer une fuite lorsqu'il y a une simulation en cours.
+     * @param idFuite L'identifiant de la fuite à réparer,
+     */
     private void reparerFuite(int idFuite) {
         Fuite fuite = fuites.get(idFuite);
         fuite.setDebit(0);

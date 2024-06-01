@@ -22,13 +22,16 @@ public class App extends Application {
      * Logger qui permet d'afficher des informations pour suivre l'exécution du programme.
      */
     private static final Logger LOG = Logger.getLogger(App.class.getName());
+    /**
+     * Scène graphique sur laquelle on ajoute les éléments FXML.
+     */
     private static Scene scene;
 
     /**
      * Injection de la classe Baignoire.
      */
     private static final String fxmlPath = "/baignoire.fxml";
-    private static ExecutorService threadPool;
+//    private static ExecutorService threadPool;
 
     /**
      * Classe principale qui permet de lancer le programme et d'intéragir avec celui-ci
@@ -65,13 +68,11 @@ public class App extends Application {
 
         launch(args);
         LOG.info("Bubbles & Leaks a fini son exécution !");
-        System.out.println("bye bye driver");
-        // Fin Process
+        // Fin Traitement
     }
 
 
     // Méthodes
-
     /**
      * Méthode qui lance l'application.
      * La méthode charge le fichier FXML de la baignoire puis charge la scène principale.
@@ -91,13 +92,5 @@ public class App extends Application {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void stop() throws Exception {
-        threadPool.shutdown();
-    }
     // Fin Méthodes
-
-    // Getters et Setters
-    // Fin Getters et Setters
 }
