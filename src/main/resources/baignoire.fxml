@@ -17,13 +17,13 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ul.miage.ncm.bubbles.BaignoireController">
+<TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ul.miage.ncm.bubbles.BaignoireController">
     <tabs>
       <Tab fx:id="tabDemarrage" text="Démarrage">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fed2e6;">
                <center>
-                  <ImageView fx:id="imageBaignoireDemarrage" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                  <ImageView fx:id="imageBaignoireDemarrage" fitHeight="328.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <image>
                         <Image url="@baignoire.png" />
                      </image>
@@ -54,7 +54,7 @@
       </Tab>
         <Tab fx:id="tabBaignoire" text="Baignoire">
             <content>
-                <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #028090;">
+                <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #028090;">
                    <bottom>
                       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10">
                          <children>
@@ -64,14 +64,14 @@
                       </HBox>
                    </bottom>
                    <left>
-                      <VBox fx:id="sliderBox" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                      <VBox fx:id="sliderBox" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
                          <children>
                             <VBox prefHeight="300.0" prefWidth="200.0">
                                <children>
                                   <Label fx:id="lblTitleDebitFuite" text="Débit fuites" textFill="WHITE" />
                                   <Label fx:id="lblDebitFuite" textFill="WHITE" />
                                   <Slider fx:id="sldFuite" blockIncrement="1.0" max="10.0" onMouseReleased="#fuiteDrag" />
-                              <ListView fx:id="listViewFuites" onMouseReleased="#listViewFuiSelect" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #028090;">
+                              <ListView fx:id="listViewFuites" onMouseReleased="#listViewFuiSelect" prefHeight="200.0" prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -83,7 +83,7 @@
                                   <Label fx:id="lblTitleDebitRob" text="Débit robinets" textFill="WHITE" />
                                   <Label fx:id="lblDebitRobinet" textFill="WHITE" />
                                   <Slider fx:id="sldRobinet" blockIncrement="1.0" max="10.0" onMouseReleased="#robinetDrag" />
-                              <ListView fx:id="listViewRobinets" onMouseReleased="#listViewRobSelect" prefHeight="300.0" prefWidth="200.0" style="-fx-background-color: #028090;">
+                              <ListView fx:id="listViewRobinets" onMouseReleased="#listViewRobSelect" prefHeight="300.0" prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -101,20 +101,26 @@
                          <children>
                             <Label prefHeight="17.0" prefWidth="200.0" text="Niveau baignoire (lt) :" textFill="WHITE" />
                             <Label fx:id="lblNiveauBaignoire" textFill="WHITE" />
-                            <Label text="Capacité baignoire (lt) : " textFill="WHITE" />
+                            <Label text="Capacité baignoire (lt) : " textFill="WHITE">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin></Label>
                             <Label fx:id="lblCapaciteBaignoire" textFill="WHITE" />
                          </children>
+                     <BorderPane.margin>
+                        <Insets top="210.0" />
+                     </BorderPane.margin>
                       </VBox>
                    </right>
                    <center>
-                      <StackPane fx:id="stackPaneBaignoire" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #028090;" BorderPane.alignment="CENTER">
+                      <StackPane fx:id="stackPaneBaignoire" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                          <children>
-                            <ImageView fx:id="imageBaignoire" fitHeight="200.0" fitWidth="200.0">
+                            <ImageView fx:id="imageBaignoire" fitHeight="245.0" fitWidth="299.0">
                                <image>
                                   <Image url="@baignoire.png" />
                                </image>
                             </ImageView>
-                            <Rectangle fx:id="rectBaignoire" arcHeight="5.0" arcWidth="5.0" fill="#baf0ff" height="100.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+                            <Rectangle fx:id="rectBaignoire" arcHeight="5.0" arcWidth="5.0" fill="#baf0ff" height="100.0" stroke="BLACK" strokeType="INSIDE" width="250.0">
                                <StackPane.margin>
                                   <Insets top="50.0" />
                                </StackPane.margin>

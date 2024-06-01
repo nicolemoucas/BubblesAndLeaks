@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class Robinet extends ScheduledService<Baignoire> {
     private static final Logger LOG = Logger.getLogger(Robinet.class.getName());
-    private Baignoire baignoire;
+    private final Baignoire baignoire;
 
     private int debit;
     private int idRobinet;
@@ -21,10 +21,20 @@ public class Robinet extends ScheduledService<Baignoire> {
     @Override
     protected Task<Baignoire> createTask() {
 
+//        return new Task<Baignoire>() {
+//            @Override
+//            protected Baignoire call() throws Exception {
+//                baignoire.ajouterEau(debit, idRobinet);
+//                return baignoire;
+//            }
+//        };
+
         return new Task<Baignoire>() {
             @Override
             protected Baignoire call() throws Exception {
-                baignoire.ajouterEau(debit);
+                synchronized (baignoire) { // synchronisé avec la ressource critique baignoire
+                    baignoire.ajouterEau(debit, idRobinet);
+                }
                 return baignoire;
             }
         };
@@ -41,9 +51,9 @@ public class Robinet extends ScheduledService<Baignoire> {
         return baignoire;
     }
 
-    public void setBaignoire(Baignoire baignoire) {
-        this.baignoire = baignoire;
-    }
+//    public void setBaignoire(Baignoire baignoire) {
+//        this.baignoire = baignoire;
+//    }
 
     public int getDebit() {
         return debit;

@@ -12,24 +12,28 @@ public class Baignoire {
         this.niveauActuel = 0;
     }
 
-    public void ajouterEau(int debit) {
+    public void ajouterEau(int debit, int idRobinet) {
         niveauActuel += debit;
         if (niveauActuel >= capaciteMax) {
             niveauActuel = capaciteMax;
         }
-        System.out.printf("[ajouter eau] capacité baignoire : %d%n", niveauActuel);
+        System.out.printf("[ajouter eau rob %d] capacité baignoire : %d%n", idRobinet, niveauActuel);
     }
 
-    public void enleverEau(int debit) {
+    public void enleverEau(int debit, int idFuite) {
         niveauActuel -= debit;
         if (niveauActuel <= 0) {
             niveauActuel = 0;
         }
-        System.out.printf("[enlever eau] capacité baignoire : %d%n", niveauActuel);
+        System.out.printf("[enlever eau fuite %d] capacité baignoire : %d%n", idFuite, niveauActuel);
     }
 
     public boolean estRemplie() {
-        return (niveauActuel <= capaciteMax);
+        return (capaciteMax <= niveauActuel);
+    }
+
+    public boolean estVide() {
+        return niveauActuel == 0;
     }
 
     // Getters et Setters
