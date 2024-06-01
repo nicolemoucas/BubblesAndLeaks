@@ -1,11 +1,19 @@
 package fr.ul.miage.ncm.bubbles;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class Outils {
-    private final String csvPath = "csv/simulationBaignoire.csv";
+    private static final Logger LOG = Logger.getLogger(Outils.class.getName());
+    private final String csvPath = "simulationBaignoire.csv";
 
     /**
      * Demande à l'utilisateur de saisir une valeur entière positive ou nulle.
@@ -56,5 +64,35 @@ public class Outils {
         }
 
     public void exporterCSV(List<Integer> niveauBaignoire, List<Long> temps) {
+        String[] headers = {"niveauBaignoire", "temps"};
+        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader(headers)
+                .build();
+        File csvFile = new File(csvPath);
+        try {
+            csvFile.createNewFile();
+
+        } catch (IOException e) {
+            LOG.warning("Une erreur est survenue lors de la création du fichier CSV.");
+            throw new RuntimeException(e);
+        }
+
+        try (final CSVPrinter printer = new CSVPrinter(new FileWriter(csvFile), csvFormat)) {
+            if (niveauBaignoire.size() != temps.size()) {
+                printer.printRecord("Une erreur est survenue lors de l'écriture du fichier CSV.");
+            } else {
+                for (int i = 0; i < niveauBaignoire.size(); i++) {
+                    try {
+                        printer.printRecord(niveauBaignoire.get(i), temps.get(i));
+                    } catch (IOException e) {
+                        LOG.warning("Erreur lors de l'écriture' du fichier CSV.");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("\nLe fichier CSV de la simulation '" + csvPath + "' a été créé.");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -113,7 +113,7 @@ public class BaignoireController {
         initialiserListeFuites(fuites);
         baignoire = initialiserElementsFXML(baignoire);
 
-        System.out.println("\n" + LocalTime.now());
+        LOG.info("Heure de début : " + LocalTime.now());
         Instant top = Instant.now();
         pool = Executors.newScheduledThreadPool(nbRobinets + nbFuites);
     }
@@ -159,6 +159,9 @@ public class BaignoireController {
     @FXML
     void demarrerSimulation() {
         Instant top = Instant.now();
+        // Mise à jour des données pour le CSV
+        niveauBaignoire.add(baignoire.getNiveauActuel());
+        temps.add(java.time.Duration.between(top, Instant.now()).toMillis());
         // Modification partie graphique
         btnStart.setDisable(true);
         btnStop.setDisable(false);

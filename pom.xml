@@ -70,7 +70,7 @@
                 <executions>
                     <execution>
                         <id>make-assembly</id>
-                        <phase>install</phase> <!-- ou package, comme ça c'est après package -->
+                        <phase>install</phase> <!-- ou package, comme ça, c'est après package -->
                         <goals>
                             <goal>single</goal>
                         </goals>
@@ -149,5 +149,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.10</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+
     </dependencies>
 </project>
