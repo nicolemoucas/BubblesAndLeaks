@@ -19,7 +19,8 @@ untitled.iml
 ./bindist/
 # Maven build directory
 ./target/
-# Javadoc
+# Documentation
 ./javadoc/
+mkdocs/
 
 /src/main/java/simulationBaignoire.csv

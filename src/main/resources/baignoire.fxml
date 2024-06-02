@@ -97,6 +97,9 @@
                            </VBox.margin>
                             </VBox>
                          </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                       </VBox>
                    </left>
                    <right>
@@ -125,12 +128,15 @@
                             </ImageView>
                             <Rectangle fx:id="rectBaignoire" arcHeight="5.0" arcWidth="5.0" fill="#baf0ff" height="100.0" stroke="BLACK" strokeType="INSIDE" width="250.0">
                                <StackPane.margin>
-                                  <Insets top="50.0" />
+                                  <Insets />
                                </StackPane.margin>
                             </Rectangle>
                          </children>
                       </StackPane>
                    </center>
+               <top>
+                  <HBox fx:id="boxImages" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </top>
                 </BorderPane>
             </content>
         </Tab>

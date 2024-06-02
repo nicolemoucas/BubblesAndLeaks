@@ -8,7 +8,9 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -71,6 +73,8 @@ public class BaignoireController {
     ListView<Fuite> listViewFuites = new ListView<>();
     @FXML
     LineChart<Number, Number> lineChartBaignoire;
+    @FXML
+    HBox boxImages;
     // Fin éléments FXML
 
     private List<Robinet> robinets;
@@ -87,6 +91,8 @@ public class BaignoireController {
     List<Callable<Object>> taches = new ArrayList<>();
     List<Integer> niveauBaignoire = new ArrayList<>();
     List<Long> temps = new ArrayList<>();
+    ImageView[] imagesRobinets;
+    ImageView[] imagesFuites;
 
     // TODO ajouter visuel fuites et robinets
 
@@ -101,6 +107,10 @@ public class BaignoireController {
                 "Entrer la capacité de la baignoire (litres) : ");
         nbRobinets = outils.saisirValeur(1, 10, "Entrer le nombre de robinets (1 à 10) : ");
         nbFuites = outils.saisirValeur(0, 10, "Entrer le nombre de fuites (0 à 10) : ");
+        imagesRobinets = new ImageView[nbRobinets];
+        imagesFuites = new ImageView[nbFuites];
+        // TODO REMOVE
+        System.out.println("lgent rob"+imagesRobinets.length+" fuite "+imagesFuites.length);
 
         baignoire = new Baignoire(capaciteMaxBaignoire);
         robinets = outils.creerListeRobinets(debitDefaultRobinet, nbRobinets, baignoire);
@@ -133,6 +143,8 @@ public class BaignoireController {
         tabDemarrage.setDisable(false);
         tabBaignoire.setDisable(true);
         tabStatistiques.setDisable(true);
+        boxImages.getChildren().addAll(imagesFuites);
+        boxImages.getChildren().addAll(imagesRobinets);
 
         // Line chart
         NumberAxis xAxis = new NumberAxis();
@@ -147,23 +159,43 @@ public class BaignoireController {
     }
 
     /**
-     * Méthode qui initialise la liste des fuites dans le listView à partir de la liste de Fuite.
-     * @param fuites La liste des fuites.
-     */
-    private void initialiserListeFuites(List<Fuite> fuites) {
-        // Vider liste s'il y a encore des fuites
-        listViewFuites.getItems().clear();
-        listViewFuites.getItems().setAll(fuites);
-    }
-
-    /**
-     * Méthode qui initialise la liste des robinets dans le listView à partir de la liste de Robinet.
+     * Méthode qui initialise la liste des robinets dans le listView à partir de la liste de Robinet
+     * et ajoute les images des robinets à la liste d'image view.
      * @param robinets La liste des robinets.
      */
     private void initialiserListeRobinets(List<Robinet> robinets) {
         // Vider liste s'il y a encore des robinets
         listViewRobinets.getItems().clear();
         listViewRobinets.getItems().setAll(robinets);
+        // Ajouter les images
+        for (int i = 0; i < nbRobinets; i++) {
+            Image imageRob = new Image(getClass().getResource("/faucet.png").toString());
+            ImageView imageViewRob = new ImageView(imageRob);
+            imageViewRob.setFitHeight(App.HEIGHT_ICONS);
+            imageViewRob.setFitWidth(App.WIDTH_ICONS);
+            imageViewRob.setPreserveRatio(true);
+            imagesRobinets[i] = imageViewRob;
+        }
+    }
+
+    /**
+     * Méthode qui initialise la liste des fuites dans le listView à partir de la liste de Fuite et
+     * ajoute les images des fuites à la liste d'image view.
+     * @param fuites La liste des fuites.
+     */
+    private void initialiserListeFuites(List<Fuite> fuites) {
+        // Vider liste s'il y a encore des fuites
+        listViewFuites.getItems().clear();
+        listViewFuites.getItems().setAll(fuites);
+        // Ajouter les images
+        for (int i = 0; i < nbFuites; i++) {
+            Image imageFuite = new Image(getClass().getResource("/leak.png").toString());
+            ImageView imageViewFuite = new ImageView(imageFuite);
+            imageViewFuite.setFitHeight(App.HEIGHT_ICONS);
+            imageViewFuite.setFitWidth(App.WIDTH_ICONS);
+            imageViewFuite.setPreserveRatio(true);
+            imagesFuites[i] = imageViewFuite;
+        }
     }
 
     /**

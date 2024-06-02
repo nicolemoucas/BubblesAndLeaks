@@ -16,8 +16,10 @@ import java.util.logging.Logger;
  * App étend la classe JavaFX Application et contient la méthode main pour démarrer l'application.
  */
 public class App extends Application {
-    public static final int MAX_BAIGNOIRE = 500;
+    public static final int MAX_BAIGNOIRE = 450;
     public static final int MAX_ESSAIS_BAIGNOIRE_VIDE = 50;
+    public static final int HEIGHT_ICONS = 40;
+    public static final int WIDTH_ICONS = 40;
     /**
      * Logger qui permet d'afficher des informations pour suivre l'exécution du programme.
      */
