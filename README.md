@@ -11,7 +11,7 @@ Elle a été réalisée en Java avec JavaFX pour faire l'interface graphique int
 - [Utilisation](#utilisation)
     - [Utiliser le simulateur](#utiliser-simulateur)
     - [Graphique à partir du fichier CSV](#graphique-csv)
-- [À propos](#a-propos)
+- [À propos](#propos)
 
 
 ## [Installation](#installation)
@@ -47,7 +47,7 @@ Pour générer le graphique, suivez les étapes suivantes :
 3. Vérifiez que l'axe des abscisses (_x_) corresponde au temps et que l'axe des ordonnées (_y_) corresponde au niveau de la baignoire.
 
 
-## [À propos](#a-propos)
+## [À propos](#propos)
 Ce projet a été créé par Nicole CASTRO MOUCHERON dans le cadre du cours de Programmation Orientée Objet Avancée pour le Master Méthodes Informatiques Appliquées à la Gestion des Entreprises I (MIAGE I) .
 
 Le projet a été réalisé entre mai et juin 2024. 
