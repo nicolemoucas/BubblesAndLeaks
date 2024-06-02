@@ -12,6 +12,7 @@ public class Baignoire {
      * Niveau actuel de la baignoire en litres.
      */
     private int niveauActuel;
+    private int litresUtilises;
 
     /**
      * Crée une nouvelle instance de la classe Baignoire.
@@ -20,6 +21,7 @@ public class Baignoire {
     public Baignoire(int capaciteMax) {
         this.capaciteMax = capaciteMax;
         this.niveauActuel = 0;
+        this.litresUtilises = 0;
     }
 
     /**
@@ -29,6 +31,7 @@ public class Baignoire {
      */
     public void ajouterEau(int debit, int idRobinet) {
         niveauActuel += debit;
+        litresUtilises += debit;
         if (niveauActuel >= capaciteMax) {
             niveauActuel = capaciteMax;
         }
@@ -79,6 +82,14 @@ public class Baignoire {
      */
     public int getNiveauActuel() {
         return niveauActuel;
+    }
+
+    /**
+     * Renvoie la quantité de litres utilisés pour remplir la baignoire.
+     * @return La quantité de litres utilisés.
+     */
+    public int getLitresUtilises() {
+        return litresUtilises;
     }
     // Fin Getters et Setters
 

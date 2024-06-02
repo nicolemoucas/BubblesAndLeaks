@@ -20,6 +20,10 @@ public class App extends Application {
     public static final int MAX_ESSAIS_BAIGNOIRE_VIDE = 50;
     public static final int HEIGHT_ICONS = 40;
     public static final int WIDTH_ICONS = 40;
+    public static final int MAX_FUITES = 10;
+    public static final int MIN_FUITES = 0;
+    public static final int MAX_ROBINETS = 10;
+    public static final int MIN_ROBINETS = 1;
     /**
      * Logger qui permet d'afficher des informations pour suivre l'exécution du programme.
      */
@@ -41,8 +45,6 @@ public class App extends Application {
      * @param args arguments de main
      */
     public static void main(String[] args) {
-        // Fin Variables
-
         // Options
         Options options = new Options();
         Option d = new Option("d", "debug", false, "mode debug");
@@ -56,6 +58,7 @@ public class App extends Application {
             LOG.setLevel(Level.WARNING);
             if (line.hasOption("d")) {
                 LOG.setLevel(Level.INFO);
+                LOG.info("Le mode débogage est activé.");
             }
         } catch (org.apache.commons.cli.ParseException e) {
             LOG.severe("Erreur dans la ligne de commande");

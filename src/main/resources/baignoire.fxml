@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ul.miage.ncm.bubbles.BaignoireController">
+<TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ul.miage.ncm.bubbles.BaignoireController">
     <tabs>
       <Tab fx:id="tabDemarrage" text="Démarrage">
          <content>
@@ -114,7 +114,7 @@
                             <Label fx:id="lblCapaciteBaignoire" textFill="WHITE" />
                          </children>
                      <BorderPane.margin>
-                        <Insets top="210.0" />
+                        <Insets top="150.0" />
                      </BorderPane.margin>
                       </VBox>
                    </right>
@@ -142,14 +142,14 @@
         </Tab>
       <Tab fx:id="tabStatistiques" text="Statistiques">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #9d79bc;">
                <children>
-                  <LineChart fx:id="lineChartBaignoire" layoutX="130.0" layoutY="80.0">
+                  <LineChart fx:id="lineChartBaignoire" layoutX="130.0" layoutY="80.0" legendVisible="false" title="Évolution du niveau de la baignoire">
                     <xAxis>
-                      <CategoryAxis side="BOTTOM" />
+                      <CategoryAxis label="Temps (ms)" side="BOTTOM" tickLabelFill="WHITE" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" />
+                      <NumberAxis label="Niveau baignoire (lt)" side="LEFT" tickLabelFill="WHITE" />
                     </yAxis>
                   </LineChart>
                </children>

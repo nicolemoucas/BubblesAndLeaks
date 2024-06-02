@@ -105,12 +105,10 @@ public class BaignoireController {
         // Saisie capacité, nb de robinets et nb de fuites
         int capaciteMaxBaignoire = outils.saisirValeur(0, App.MAX_BAIGNOIRE,
                 "Entrer la capacité de la baignoire (litres) : ");
-        nbRobinets = outils.saisirValeur(1, 10, "Entrer le nombre de robinets (1 à 10) : ");
-        nbFuites = outils.saisirValeur(0, 10, "Entrer le nombre de fuites (0 à 10) : ");
+        nbRobinets = outils.saisirValeur(App.MIN_ROBINETS, App.MAX_ROBINETS, "Entrer le nombre de robinets (1 à 10) : ");
+        nbFuites = outils.saisirValeur(App.MIN_FUITES, App.MAX_FUITES, "Entrer le nombre de fuites (0 à 10) : ");
         imagesRobinets = new ImageView[nbRobinets];
         imagesFuites = new ImageView[nbFuites];
-        // TODO REMOVE
-        System.out.println("lgent rob"+imagesRobinets.length+" fuite "+imagesFuites.length);
 
         baignoire = new Baignoire(capaciteMaxBaignoire);
         robinets = outils.creerListeRobinets(debitDefaultRobinet, nbRobinets, baignoire);
@@ -145,15 +143,6 @@ public class BaignoireController {
         tabStatistiques.setDisable(true);
         boxImages.getChildren().addAll(imagesFuites);
         boxImages.getChildren().addAll(imagesRobinets);
-
-        // Line chart
-        NumberAxis xAxis = new NumberAxis();
-        xAxis.setLabel("Temps (ms)");
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Niveau baignoire (lt)");
-        yAxis.setUpperBound(baignoire.getCapaciteMax());
-        lineChartBaignoire = new LineChart<>(xAxis, yAxis);
-        lineChartBaignoire.setTitle("Évolution du niveau de la baignoire");
 
         return baignoire;
     }
@@ -257,11 +246,9 @@ public class BaignoireController {
 
         niveauBaignoire.add(baignoire.getNiveauActuel());
         temps.add(duration.toMillis());
-        series.getData().add(new XYChart.Data<>(niveauBaignoire.get(niveauBaignoire.size()-1),
-                temps.get(temps.size()-1)));
-        for (XYChart.Data<Number, Number> data : series.getData()) {
-            System.out.println("X: " + data.getXValue() + ", Y: " + data.getYValue());
-        }
+        series.getData().add(new XYChart.Data<>(temps.get(temps.size()-1),
+                niveauBaignoire.get(niveauBaignoire.size()-1)));
+
         lineChartBaignoire.getData().add(series);
     }
 
@@ -321,6 +308,7 @@ public class BaignoireController {
         listViewFuites.setDisable(true);
         listViewRobinets.setDisable(true);
         System.out.println("\nLa simulation vient de terminer. 🛀🏻");
+        System.out.printf("%nVous avez utilisé %d litres pour la remplir. 💦%n", baignoire.getLitresUtilises());
         // TODO vérifier si c'est bon
         for (Robinet rob : robinets) {
             rob.cancel();
