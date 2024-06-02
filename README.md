@@ -9,6 +9,8 @@ Elle a été réalisée en Java avec JavaFX pour faire l'interface graphique int
 ## Table des matières
 - [Installation](#installation)
 - [Utilisation](#utilisation)
+    - [Utiliser le simulateur](#utiliser-simulateur)
+    - [Graphique à partir du fichier CSV](#graphique-csv)
 - [À propos](#a-propos)
 
 
@@ -24,6 +26,7 @@ Pour installer Bubbles & Leaks vous devez suivre les étapes suivantes :
 ## [Utilisation](#utilisation)
 La baignoire a une capacité maximale et d'un nombre de robinets et de fuites qui sont à saisir par l'utilisateur.
 
+### [Utiliser le simulateur](#utiliser-simulateur)
 Pour utiliser l'application il faut suivre les étapes suivantes :
 
 1. Déplacez vous dans le dossier `bin` avec `cd bindist/bin`
@@ -34,7 +37,7 @@ Pour utiliser l'application il faut suivre les étapes suivantes :
 6. Une fois que vous aurez fini de modifier les débits, cliquez sur "Démarrer" pour commencer la simulation.
 7. Vous pouvez toujours modifier le débit des robinets, mais pas celui des fuites. Celles-ci peuvent maintenant être réparées, il suffit de sélectionner la fuite que vous voulez réparer.
 
-## Graphique à partir du fichier CSV
+### [Graphique à partir du fichier CSV](#graphique-csv)
 À la fin de la simulation, si elle s'est exécutée sans erreurs, vous trouverez le fichier `simulationBaignoire.csv` dans le dossier `/src/java` avec l'évolution du niveau de la baignoire et le temps. Celui-ci vous permettra de faire un graphique pour voir l'évolution du niveau de la baignoire en fonction du temps.
 
 Pour générer le graphique, suivez les étapes suivantes :
