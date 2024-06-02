@@ -37,7 +37,6 @@ public class App extends Application {
      * Injection de la classe Baignoire.
      */
     private static final String fxmlPath = "/baignoire.fxml";
-//    private static ExecutorService threadPool;
 
     /**
      * Classe principale qui permet de lancer le programme et d'intéragir avec celui-ci

@@ -1,7 +1,7 @@
 package fr.ul.miage.ncm.bubbles;
 
 /**
- * Classe qui permet d'appeler l'application Bubbles &amp; Leaks
+ * Classe qui permet d'appeler l'application Bubbles &amp; Leaks.
  */
 public class Launcher {
     /**

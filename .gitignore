@@ -1,9 +1,5 @@
 # Default ignored files
-.idea/shelf/
-/.idea/workspace.xml
-.idea/*.xml
-.idea/*.iml
-.idea/*.iml
+.idea/
 *.iml
 untitled.iml
 # Editor-based HTTP Client requests
@@ -12,15 +8,15 @@ untitled.iml
 /dataSources/
 /dataSources.local.xml
 # Mac OSX files
-./src/.DS_Store
-./src/main/.DS_Store
+src/.DS_Store
+src/main/.DS_Store
 *.DS_Store
 # Maven distribution directory
-./bindist/
+bindist/
 # Maven build directory
-./target/
+target/
 # Documentation
-./javadoc/
+javadoc/
 mkdocs/
 
 /src/main/java/simulationBaignoire.csv

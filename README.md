@@ -15,7 +15,7 @@ Elle a été réalisée en Java avec JavaFX pour faire l'interface graphique int
 
 
 ## [Installation](#installation)
-Pour utiliser Bubbles & Leaks, vous aurez besoin de [Java17](https://www.oracle.com/fr/java/technologies/downloads/#java17) et de [Maven](https://maven.apache.org/download.cgi).
+Pour utiliser l'spplication, vous aurez besoin de [Java17](https://www.oracle.com/fr/java/technologies/downloads/#java17) et de [Maven](https://maven.apache.org/download.cgi).
 
 Pour installer Bubbles & Leaks vous devez suivre les étapes suivantes :
 

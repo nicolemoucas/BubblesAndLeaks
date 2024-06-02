@@ -27,6 +27,8 @@ public class Outils {
     /**
      * Demande à l'utilisateur de saisir une valeur entière positive ou nulle.
      * La saisie est répétée jusqu'à ce que l'utilisateur entre une valeur valide.
+     * @param min       La valeur minimale à respecter pour la saisie.
+     * @param max       La valeur maximale à respecter pour la saisie.
      * @param message   Le message à afficher pour demander la saisie de la valeur.
      * @return          La valeur entière saisie par l'utilisateur.
      */

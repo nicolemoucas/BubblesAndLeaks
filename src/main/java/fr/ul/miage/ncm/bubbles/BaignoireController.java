@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 
 /**
- * Classe contrôleur pour la vue Baignoire.fxml
+ * Classe contrôleur pour la vue Baignoire.fxml.
  */
 public class BaignoireController {
     /**

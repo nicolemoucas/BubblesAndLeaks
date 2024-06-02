@@ -91,12 +91,11 @@
                 <version>3.6.3</version>
                 <configuration>
                     <reportOutputDirectory>${project.basedir}/javadoc</reportOutputDirectory>
-                    <sourcepath>${project.groupId}.${project.artifactId}</sourcepath>
                 </configuration>
                 <executions>
                     <execution>
                         <id>generate-javadoc</id>
-                        <phase>prepare-package</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>javadoc</goal>
                         </goals>
