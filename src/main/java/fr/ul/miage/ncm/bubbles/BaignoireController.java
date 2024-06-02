@@ -4,11 +4,12 @@ import javafx.beans.binding.Bindings;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -63,9 +64,13 @@ public class BaignoireController {
     @FXML
     Tab tabDemarrage;
     @FXML
+    Tab tabStatistiques;
+    @FXML
     ListView<Robinet> listViewRobinets = new ListView<>();
     @FXML
     ListView<Fuite> listViewFuites = new ListView<>();
+    @FXML
+    LineChart<Number, Number> lineChartBaignoire;
     // Fin éléments FXML
 
     private List<Robinet> robinets;
@@ -127,6 +132,17 @@ public class BaignoireController {
         stackPaneBaignoire.getChildren().remove(rectBaignoire);
         tabDemarrage.setDisable(false);
         tabBaignoire.setDisable(true);
+        tabStatistiques.setDisable(true);
+
+        // Line chart
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel("Temps (ms)");
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Niveau baignoire (lt)");
+        yAxis.setUpperBound(baignoire.getCapaciteMax());
+        lineChartBaignoire = new LineChart<>(xAxis, yAxis);
+        lineChartBaignoire.setTitle("Évolution du niveau de la baignoire");
+
         return baignoire;
     }
 
@@ -158,6 +174,7 @@ public class BaignoireController {
         tabPane.getSelectionModel().select(tabBaignoire);
         tabDemarrage.setDisable(true);
         tabBaignoire.setDisable(false);
+        tabStatistiques.setDisable(false);
     }
 
     /**
@@ -167,9 +184,8 @@ public class BaignoireController {
     @FXML
     void demarrerSimulation() {
         Instant top = Instant.now();
-        // Mise à jour des données pour le CSV
-        niveauBaignoire.add(baignoire.getNiveauActuel());
-        temps.add(java.time.Duration.between(top, Instant.now()).toMillis());
+        updateGraphiqueCSV(top);
+
         // Modification partie graphique
         btnStart.setDisable(true);
         btnStop.setDisable(false);
@@ -197,6 +213,21 @@ public class BaignoireController {
         System.out.println("\nLa simulation vient de démarrer. 🫧");
     }
 
+    private void updateGraphiqueCSV(Instant top) {
+        java.time.Duration duration = java.time.Duration.between(top, Instant.now());
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName(Long.toString(duration.toMillis()));
+
+        niveauBaignoire.add(baignoire.getNiveauActuel());
+        temps.add(duration.toMillis());
+        series.getData().add(new XYChart.Data<>(niveauBaignoire.get(niveauBaignoire.size()-1),
+                temps.get(temps.size()-1)));
+        for (XYChart.Data<Number, Number> data : series.getData()) {
+            System.out.println("X: " + data.getXValue() + ", Y: " + data.getYValue());
+        }
+        lineChartBaignoire.getData().add(series);
+    }
+
     /**
      * Méthode qui initialise les threads pour les robinets et les fuites.
      * @param elements  La liste de robinets ou de fuites.
@@ -213,12 +244,10 @@ public class BaignoireController {
                     java.time.Duration duration = java.time.Duration.between(top, Instant.now());
                     elem.setOnSucceeded((WorkerStateEvent e) -> {
                         rectBaignoire.setHeight(baignoire.getNiveauActuel());
-                        // Mise à jour des données pour le CSV
-                        niveauBaignoire.add(baignoire.getNiveauActuel());
-                        temps.add(duration.toMillis());
+                        updateGraphiqueCSV(top);
 
                         if(baignoire.estRemplie()) {
-                            System.out.printf("La baignoire est prête pour un bain !%nTemps de remplissage : %dms.",
+                            System.out.printf("%nLa baignoire est prête pour un bain !%nTemps de remplissage : %ds.",
                                     duration.toMillis());
                             elem.cancel(); // Arrêter fuite ou robinet
                             terminerSimulation();
