@@ -21,3 +21,5 @@ untitled.iml
 ./target/
 # Javadoc
 ./javadoc/
+
+/src/main/java/simulationBaignoire.csv
