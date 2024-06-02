@@ -213,6 +213,11 @@ public class BaignoireController {
         System.out.println("\nLa simulation vient de démarrer. 🫧");
     }
 
+    /**
+     * Ajoute le niveau actuel de la baignoire et l'instant auquel cette donnée est observée et ajoute
+     * au line chart les nouvelles données observées.
+     * @param top Instant donné quand la fonction est appelée.
+     */
     private void updateGraphiqueCSV(Instant top) {
         java.time.Duration duration = java.time.Duration.between(top, Instant.now());
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
