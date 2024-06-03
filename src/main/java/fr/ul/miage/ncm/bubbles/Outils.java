@@ -95,7 +95,7 @@ public class Outils {
      * @param temps             La liste avec les temps correspondants aux modifications du niveau
      *                          de la baignoire.
      */
-    public void exporterCSV(List<Integer> niveauBaignoire, List<Long> temps) {
+    public void exporterCSV(List<Double> niveauBaignoire, List<Double> temps) {
         String[] headers = {"niveauBaignoire", "temps"};
         CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                 .setHeader(headers)

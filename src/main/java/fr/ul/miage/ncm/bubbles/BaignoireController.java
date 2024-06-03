@@ -87,8 +87,8 @@ public class BaignoireController {
     ScheduledExecutorService pool;
     Baignoire baignoire;
     List<Callable<Object>> taches = new ArrayList<>();
-    List<Integer> niveauBaignoire = new ArrayList<>();
-    List<Long> temps = new ArrayList<>();
+    List<Double> niveauBaignoire = new ArrayList<>();
+    List<Double> temps = new ArrayList<>();
     ImageView[] imagesRobinets;
     ImageView[] imagesFuites;
 
@@ -242,10 +242,10 @@ public class BaignoireController {
     private void updateGraphiqueCSV(Instant top) {
         java.time.Duration duration = java.time.Duration.between(top, Instant.now());
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName(Long.toString(duration.toMillis()));
+//        series.setName(Long.toString(duration.toMillis()));
 
-        niveauBaignoire.add(baignoire.getNiveauActuel());
-        temps.add(duration.toMillis());
+        niveauBaignoire.add((double) baignoire.getNiveauActuel());
+        temps.add((double) duration.toMillis());
         series.getData().add(new XYChart.Data<>(temps.get(temps.size()-1),
                 niveauBaignoire.get(niveauBaignoire.size()-1)));
 
@@ -308,7 +308,14 @@ public class BaignoireController {
         listViewFuites.setDisable(true);
         listViewRobinets.setDisable(true);
         System.out.println("\nLa simulation vient de terminer. 🛀🏻");
-        System.out.printf("%nVous avez utilisé %d litres pour la remplir. 💦%n", baignoire.getLitresUtilises());
+        // Si la simulation s'est arrêtée car la baignoire est remplie
+        if (baignoire.estRemplie()) {
+            System.out.printf("%nVous avez utilisé %d litres pour remplir la baignoire. 💦%n",
+                    baignoire.getLitresUtilises());
+        } else { // si la simulation a été arrêtée manuellement
+            System.out.printf("%nVous avez utilisé %d litres, la baignoire est à %.2f%% de sa capacité. 💦%n",
+                    baignoire.getLitresUtilises(), baignoire.calculPourcentageRemp());
+        }
         // TODO vérifier si c'est bon
         for (Robinet rob : robinets) {
             rob.cancel();
@@ -391,4 +398,18 @@ public class BaignoireController {
         System.out.printf("Débit de la fuite %d : %d%n", fuite.getIdFuite(), fuite.getDebit());
         listViewFuites.getSelectionModel().clearSelection();
     }
+
+    // TODO remove
+//    @FXML
+//    void afficherGraphique() {
+//        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+//        series.setName("500");
+//
+//        niveauBaignoire.add((double) 60);
+//        temps.add((double) 500);
+//        series.getData().add(new XYChart.Data<>(temps.get(temps.size()-1),
+//                niveauBaignoire.get(niveauBaignoire.size()-1)));
+//
+//        lineChartBaignoire.getData().add(series);
+//    }
 }

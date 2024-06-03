@@ -91,6 +91,11 @@ public class Baignoire {
     public int getLitresUtilises() {
         return litresUtilises;
     }
+
+    public double calculPourcentageRemp() {
+        double niveau = (double) niveauActuel/capaciteMax;
+        return niveau * 100;
+    }
     // Fin Getters et Setters
 
 }
