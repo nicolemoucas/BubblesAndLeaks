@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,19 +15,51 @@ import java.util.logging.Logger;
  * App étend la classe JavaFX Application et contient la méthode main pour démarrer l'application.
  */
 public class App extends Application {
-    public static final int MAX_BAIGNOIRE = 500;
+    /**
+     * Constante qui définit la capacité maximale de la baignoire.
+     */
+    public static final int MAX_BAIGNOIRE = 450;
+    /**
+     * Constante qui définit le nombre maximal d'essais de modification du niveau de la baignoire si
+     * elle est vide.
+     */
     public static final int MAX_ESSAIS_BAIGNOIRE_VIDE = 50;
+    /**
+     * Constante qui définit la hauteur des icônes des robinets et fuites.
+     */
+    public static final int HEIGHT_ICONS = 40;
+    /**
+     * Constante qui définit la largeur des icônes des robinets et fuites.
+     */
+    public static final int WIDTH_ICONS = 40;
+    /**
+     * Constante qui définit le nombre maximum de fuites.
+     */
+    public static final int MAX_FUITES = 10;
+    /**
+     * Constante qui définit le nombre minimum de fuites.
+     */
+    public static final int MIN_FUITES = 0;
+    /**
+     * Constante qui définit le nombre maximum de robinets.
+     */
+    public static final int MAX_ROBINETS = 10;
+    /**
+     * Constante qui définit le nombre minimum de robinets.
+     */
+    public static final int MIN_ROBINETS = 1;
     /**
      * Logger qui permet d'afficher des informations pour suivre l'exécution du programme.
      */
     private static final Logger LOG = Logger.getLogger(App.class.getName());
+    /**
+     * Scène graphique sur laquelle on ajoute les éléments FXML.
+     */
     private static Scene scene;
-
     /**
      * Injection de la classe Baignoire.
      */
     private static final String fxmlPath = "/baignoire.fxml";
-    private static ExecutorService threadPool;
 
     /**
      * Classe principale qui permet de lancer le programme et d'intéragir avec celui-ci
@@ -36,8 +67,6 @@ public class App extends Application {
      * @param args arguments de main
      */
     public static void main(String[] args) {
-        // Fin Variables
-
         // Options
         Options options = new Options();
         Option d = new Option("d", "debug", false, "mode debug");
@@ -51,6 +80,7 @@ public class App extends Application {
             LOG.setLevel(Level.WARNING);
             if (line.hasOption("d")) {
                 LOG.setLevel(Level.INFO);
+                LOG.info("Le mode débogage est activé.");
             }
         } catch (org.apache.commons.cli.ParseException e) {
             LOG.severe("Erreur dans la ligne de commande");
@@ -62,15 +92,13 @@ public class App extends Application {
 
         // Traitement
         LOG.info("Bubbles & Leaks a démarré !");
-
         launch(args);
         LOG.info("Bubbles & Leaks a fini son exécution !");
-        // Fin Process
+        // Fin Traitement
     }
 
 
     // Méthodes
-
     /**
      * Méthode qui lance l'application.
      * La méthode charge le fichier FXML de la baignoire puis charge la scène principale.
@@ -90,13 +118,5 @@ public class App extends Application {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void stop() throws Exception {
-        threadPool.shutdown();
-    }
     // Fin Méthodes
-
-    // Getters et Setters
-    // Fin Getters et Setters
 }

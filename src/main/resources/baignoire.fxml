@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -94,6 +97,9 @@
                            </VBox.margin>
                             </VBox>
                          </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                       </VBox>
                    </left>
                    <right>
@@ -108,7 +114,7 @@
                             <Label fx:id="lblCapaciteBaignoire" textFill="WHITE" />
                          </children>
                      <BorderPane.margin>
-                        <Insets top="210.0" />
+                        <Insets top="150.0" />
                      </BorderPane.margin>
                       </VBox>
                    </right>
@@ -122,19 +128,33 @@
                             </ImageView>
                             <Rectangle fx:id="rectBaignoire" arcHeight="5.0" arcWidth="5.0" fill="#baf0ff" height="100.0" stroke="BLACK" strokeType="INSIDE" width="250.0">
                                <StackPane.margin>
-                                  <Insets top="50.0" />
+                                  <Insets />
                                </StackPane.margin>
                             </Rectangle>
                          </children>
                       </StackPane>
                    </center>
+               <top>
+                  <HBox fx:id="boxImages" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </top>
                 </BorderPane>
             </content>
         </Tab>
-        <Tab fx:id="tabStatistiques" text="Statistiques">
-            <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-        </Tab>
+      <Tab fx:id="tabStatistiques" text="Statistiques">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #9d79bc;">
+               <children>
+                  <LineChart fx:id="lineChartBaignoire" layoutX="130.0" layoutY="80.0" legendVisible="false" title="Évolution du niveau de la baignoire">
+                    <xAxis>
+                      <CategoryAxis label="Temps (ms)" side="BOTTOM" tickLabelFill="WHITE" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis label="Niveau baignoire (lt)" side="LEFT" tickLabelFill="WHITE" />
+                    </yAxis>
+                  </LineChart>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
     </tabs>
 </TabPane>
