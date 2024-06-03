@@ -79,13 +79,11 @@ public class BaignoireController {
 
     private List<Robinet> robinets;
     private List<Fuite> fuites;
-    private Outils outils = new Outils();
-    int nbRobinets;
-    int nbFuites;
-    int debitDefaultRobinet = 5;
-    int debitDefaultFuite = 2;
-    int nbEssaisBaignoireVide = 0;
-    boolean simulationActive = false;
+    private final Outils outils = new Outils();
+    private int nbRobinets;
+    private int nbFuites;
+    private int nbEssaisBaignoireVide = 0;
+    private boolean simulationActive = false;
     ScheduledExecutorService pool;
     Baignoire baignoire;
     List<Callable<Object>> taches = new ArrayList<>();
@@ -111,7 +109,9 @@ public class BaignoireController {
         imagesFuites = new ImageView[nbFuites];
 
         baignoire = new Baignoire(capaciteMaxBaignoire);
+        int debitDefaultRobinet = 5;
         robinets = outils.creerListeRobinets(debitDefaultRobinet, nbRobinets, baignoire);
+        int debitDefaultFuite = 2;
         fuites = outils.creerListeFuites(debitDefaultFuite, nbFuites, baignoire);
         initialiserListeRobinets(robinets);
         initialiserListeFuites(fuites);
