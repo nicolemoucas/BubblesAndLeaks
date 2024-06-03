@@ -92,6 +92,11 @@ public class Baignoire {
         return litresUtilises;
     }
 
+    /**
+     * Calcule le pourcentage de remplissage de la baignoire à partir du niveau actuel et de la capacité
+     * maximale.
+     * @return Le pourcentage de remplissage de la baignoire.
+     */
     public double calculPourcentageRemp() {
         double niveau = (double) niveauActuel/capaciteMax;
         return niveau * 100;

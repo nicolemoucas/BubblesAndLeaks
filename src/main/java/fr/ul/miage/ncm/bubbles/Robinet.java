@@ -66,11 +66,11 @@ public class Robinet extends ScheduledService<Baignoire> {
     }
 
 
+    // Getters et Setters
     /**
      * Renvoie le débit du robinet en litres par seconde.
      * @return Le débit du robinet
      */
-    // Getters et Setters
     public int getDebit() {
         return debit;
     }

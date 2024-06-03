@@ -15,13 +15,38 @@ import java.util.logging.Logger;
  * App étend la classe JavaFX Application et contient la méthode main pour démarrer l'application.
  */
 public class App extends Application {
+    /**
+     * Constante qui définit la capacité maximale de la baignoire.
+     */
     public static final int MAX_BAIGNOIRE = 450;
+    /**
+     * Constante qui définit le nombre maximal d'essais de modification du niveau de la baignoire si
+     * elle est vide.
+     */
     public static final int MAX_ESSAIS_BAIGNOIRE_VIDE = 50;
+    /**
+     * Constante qui définit la hauteur des icônes des robinets et fuites.
+     */
     public static final int HEIGHT_ICONS = 40;
+    /**
+     * Constante qui définit la largeur des icônes des robinets et fuites.
+     */
     public static final int WIDTH_ICONS = 40;
+    /**
+     * Constante qui définit le nombre maximum de fuites.
+     */
     public static final int MAX_FUITES = 10;
+    /**
+     * Constante qui définit le nombre minimum de fuites.
+     */
     public static final int MIN_FUITES = 0;
+    /**
+     * Constante qui définit le nombre maximum de robinets.
+     */
     public static final int MAX_ROBINETS = 10;
+    /**
+     * Constante qui définit le nombre minimum de robinets.
+     */
     public static final int MIN_ROBINETS = 1;
     /**
      * Logger qui permet d'afficher des informations pour suivre l'exécution du programme.
@@ -31,7 +56,6 @@ public class App extends Application {
      * Scène graphique sur laquelle on ajoute les éléments FXML.
      */
     private static Scene scene;
-
     /**
      * Injection de la classe Baignoire.
      */
@@ -68,7 +92,6 @@ public class App extends Application {
 
         // Traitement
         LOG.info("Bubbles & Leaks a démarré !");
-
         launch(args);
         LOG.info("Bubbles & Leaks a fini son exécution !");
         // Fin Traitement
