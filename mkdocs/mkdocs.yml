@@ -1,0 +1,8 @@
+site_name: Bubbles & Leaks 🫧
+nav:
+  - Accueil: index.md
+  - Installation: install.md
+  - Utilisation: use.md
+  - À propos: about.md
+
+use_directory_urls: false

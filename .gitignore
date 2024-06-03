@@ -17,6 +17,6 @@ bindist/
 target/
 # Documentation
 javadoc/
-mkdocs/
+mkdocs/site
 
 /src/main/java/simulationBaignoire.csv
